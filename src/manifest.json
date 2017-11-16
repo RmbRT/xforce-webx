@@ -1,0 +1,28 @@
+{
+	"manifest_version": 2,
+	"name": "IBM XForce",
+	"version": "1.0",
+
+	"description": "IBM XForce API WebExtension",
+
+	"icons": {
+		"48": "images/logo-48.png",
+		"96": "images/logo-96.png"
+	},
+
+	"content_scripts": [
+		{
+			"matches": ["<all_urls>"],
+			"js": ["extension.js"]
+		}
+	],
+
+	"browser_action": {
+		"browser_style": true,
+		"default_popup": "popup/default.html",
+		"default_icon": {
+			"16": "images/icon-16.png",
+			"32": "images/icon-32.png"
+		}
+	}
+}
