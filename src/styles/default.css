@@ -1,0 +1,8 @@
+a.unchecked_link:after {
+	display: inline;
+	content: "(unchecked)";
+	color: red;
+	text-decoration: none;
+	vertical-align: super;
+	font-size: small;
+}
