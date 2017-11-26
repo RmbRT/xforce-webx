@@ -1,33 +1,35 @@
 <!DOCTYPE html>
-<meta charset='utf-8'>
+<html>
 <head>
+	<meta charset='utf-8' />
+	<script src="../src/xforce-api.js"></script>
 </head>
-
 <body>
-<script>
-  // add credentials as Strings here 
-	var user = '';
-	var password = ''; 
-	
+	<h1>url-report</h1>
+	<p>User: <input id="user" type="text" /></p>
+	<p>Password: <input id="password" type="password" /></p>
+	<p>
+		URL: <input id="input" type="text" value="www.ibm.com/smarterplanet" />
+		<button onclick="request()">Request</button>
+	</p>
+	<code style="padding: 10px; display: block; background-color:black; color:lightgrey;" id="output">Loading XForce-API...</code>
+	<script>
+		function request() {
+			var url = document.getElementById("input").value;
+			document.getElementById("output").innerText += "\n\nRequesting url report for " + url + "...";
 
-	function startRequest(type, url){
-	var https = new XMLHttpRequest();
-	https.onreadystatechange = function(){
-		if (https.readyState == 4 )
-			document.write(https.responseText);
-	}
-	 
-	https.open('GET', 'https://api.xforce.ibmcloud.com/'+ type + url ,true);
-	https.setRequestHeader('Authorization', 'Basic ' + window.btoa( user + ":"+ password));
-	https.send();
-	
-	}
-	
+			var API = new XForce(
+				document.getElementById("user").value,
+				document.getElementById("password").value);
 
-	function getUrlReport(url, user, password){
-		var type = 'url/';
-		startRequest(type, url, user, password);
-	}
-	//Uncomment me: getUrlReport('www.ibm.com%2Fsmarterplanet', user, password);
-</script>
+			API.urlReport(url,
+				function(response) {
+					document.getElementById("output").innerText += "\n" + (response);
+				},
+				function(e) {
+					document.getElementById("output").innerText += "\nError: " + e;
+				});
+		}
+	</script>
 </body>
+</html>
