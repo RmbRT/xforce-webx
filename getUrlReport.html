@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<meta charset='utf-8'>
+<head>
+</head>
+
+<body>
+<script>
+  // add credentials as Strings here 
+	var user = '';
+	var password = ''; 
+	
+
+	function startRequest(type, url){
+	var https = new XMLHttpRequest();
+	https.onreadystatechange = function(){
+		if (https.readyState == 4 )
+			document.write(https.responseText);
+	}
+	 
+	https.open('GET', 'https://api.xforce.ibmcloud.com/'+ type + url ,true);
+	https.setRequestHeader('Authorization', 'Basic ' + window.btoa( user + ":"+ password));
+	https.send();
+	
+	}
+	
+
+	function getUrlReport(url, user, password){
+		var type = 'url/';
+		startRequest(type, url, user, password);
+	}
+	//Uncomment me: getUrlReport('www.ibm.com%2Fsmarterplanet', user, password);
+</script>
+</body>
