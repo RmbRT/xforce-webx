@@ -18,13 +18,13 @@
 		}
 	],
 
-	   "background": {
-        "scripts": [
-            "background.js"
-        ]
-},
-
-
+	"background": {
+		"scripts": [
+			"background.js",
+			"xforce-api.js",
+			"report-cache.js"
+		]
+	},
 
 	"browser_action": {
 		"browser_style": true,
@@ -35,5 +35,8 @@
 		}
 	},
 	
-	"permissions": ["contextMenus"]
+	"permissions": [
+		"contextMenus",
+		"activeTab"
+	]
 }

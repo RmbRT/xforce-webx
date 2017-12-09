@@ -1,8 +1,9 @@
-a.unchecked_link:after {
+a[href]:not(.checked_link):after {
 	display: inline;
-	content: "(unchecked)";
+	content: "!";
 	color: red;
 	text-decoration: none;
 	vertical-align: super;
 	font-size: small;
+	font-weight: normal;
 }
