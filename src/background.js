@@ -1,5 +1,6 @@
 browser.contextMenus.create({
-    id: "copy-link-to-clipboard",
-    title: "Copy link to clipboard",
+    id: "get URL report",
+    title: "Get URL report",
     contexts: ["link"],
 });
+
