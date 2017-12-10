@@ -1,7 +1,7 @@
 browser.contextMenus.create({
 	id: "get URL report",
 	title: "Get URL report",
-	contexts: ["link"],
+	contexts: ["link"]
 });
 
 browser.contextMenus.onClicked.addListener((info, tab) => {
@@ -15,26 +15,35 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
 			});
 			return;
 		}
-
 		// otherwise, request report.
+		// the tab id has to be curried into the event handlers.
 		XForceAPI.urlReport(
 			info.linkUrl,
-			function(response) {
+			((curry) => { return function(response) {
 				// add the report to the cache.
 				reportCache.addReport(response);
-				browser.tabs.executeScript({
-					code: 'alert(' + JSON.stringify(response) + ');'
+				browser.tabs.sendMessage(
+					curry.tabId, {
+					call: "url",
+					type: "Response",
+					content: response
 				});
-			},
-			function(errorResponse) {
-				browser.tabs.executeScript({
-					code: 'alert("error: " + ' + JSON.stringify(errorResponse) + ');'
+			};})({"tabId": tab.id}),
+			((curry) => { return function(errorResponse) {
+				browser.tabs.sendMessage(
+					curry.tabId, {
+					call: "url",
+					type: "ErrorResponse",
+					content: errorResponse
 				});
-			},
-			function(connectionError) {
-				browser.tabs.executeScript({
-					code: 'alert("connection error: " + ' + JSON.stringify(connectionError) + ');'
+			};})({"tabId": tab.id}),
+			((curry) => { return function(connectionError) {
+				browser.tabs.sendMessage(
+					curry.tabId, {
+					call: "url",
+					type: "ConnectionError",
+					content: connectionError
 				});
-			});
+			};})({"tabId": tab.id}));
 	}
 });

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset='utf-8' />
+	<script src="../src/report-cache.js"></script>
+</head>
+<body>
+	<p>domain: <input id="url" type="text" /></p>
+	<p><button onclick="insert()">insert</button>
+	<pre><code id="output"></code></pre>
+
+	<script>
+		function insert()
+		{
+			var console = document.getElementById("output");
+			var url = document.getElementById("url").value;
+
+			console.innerText += "\n\nInserting entry for '" + url + "' ('" + urlDomain(url) + "')";
+
+			if(reportCache.findReport(url))
+				console.innerText += "\nAn entry already exists. Ignoring.";
+			else
+			{
+				console.innerText += "\nNo entry exists yet. Inserting.";
+				reportCache.addReport({url: urlDomain(url)});
+			}
+		}
+	</script>
+</body>
+</html>

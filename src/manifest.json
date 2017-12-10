@@ -34,9 +34,14 @@
 			"32": "images/icon-32.png"
 		}
 	},
+
+	"options_ui": {
+		"page": "options.html"
+	},
 	
 	"permissions": [
 		"contextMenus",
-		"activeTab"
+		"activeTab",
+		"storage"
 	]
 }

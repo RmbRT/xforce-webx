@@ -7,9 +7,15 @@ function XForce(user, password) {
 	this._login = window.btoa(user + ":" + password);
 }
 
-// TODO: Load credentials from plugin settings.
-// The global X-Force API object.
-const XForceAPI = new XForce("","");
+// only executes if part of the plugin (and not directly included into a HTML document).
+if(window.browser) {
+	// load the username and password from the plugin settings.
+	browser.storage.local.get(["username", "password"]).then((o) => {
+		// create the global API object.
+		window.XForceAPI = new XForce(o.username, o.password);
+	});
+}
+
 
 /** Creates a request to the XForce API.
 	Either onResponse or onError will be called.

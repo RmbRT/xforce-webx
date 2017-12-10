@@ -1,4 +1,4 @@
-a[href]:not(.checked_link):after {
+/*a[href]:not(.checked_link):after {
 	display: inline;
 	content: "!";
 	color: red;
@@ -6,4 +6,4 @@ a[href]:not(.checked_link):after {
 	vertical-align: super;
 	font-size: small;
 	font-weight: normal;
-}
+}*/
