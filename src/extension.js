@@ -16,7 +16,7 @@ function Handler(
 }
 
 Handler.prototype.onResponse = function(response) {
-	alert(this.name + " response: " + response);
+	addReport(response.url, response);
 };
 
 Handler.prototype.onErrorResponse = function(error) {

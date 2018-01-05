@@ -1,9 +1,18 @@
-/*a[href]:not(.checked_link):after {
-	display: inline;
-	content: "!";
-	color: red;
-	text-decoration: none;
-	vertical-align: super;
-	font-size: small;
-	font-weight: normal;
-}*/
+/* The report style. */
+.xforce-api-report {
+	position: relative;
+	/* Offset. */
+	left: 0;
+	top: 0;
+	/* Hack to make the report take up no space. */
+	width: 400px;
+	margin-right: -400px;
+	background-color:white;
+	/* Hide reports. */
+	display: none !important;
+}
+
+/* Only show reports for links that are hovered. */
+a[href]:hover > .xforce-api-report {
+	display: inline-block !important;
+}
