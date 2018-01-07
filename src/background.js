@@ -10,8 +10,11 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
 		var report;
 		if(report = reportCache.findReport(info.linkUrl))
 		{
-			browser.tabs.executeScript({
-				code: 'alert(' + JSON.stringify(report) + ');'
+			browser.tabs.sendMessage(
+				tab.id, {
+				call: "url",
+				type: "Response",
+				content: report
 			});
 			return;
 		}
@@ -26,7 +29,8 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
 					curry.tabId, {
 					call: "url",
 					type: "Response",
-					content: response
+					content: response,
+					request: info.linkUrl
 				});
 			};})({"tabId": tab.id}),
 			((curry) => { return function(errorResponse) {
@@ -34,7 +38,8 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
 					curry.tabId, {
 					call: "url",
 					type: "ErrorResponse",
-					content: errorResponse
+					content: errorResponse,
+					request: info.linkUrl
 				});
 			};})({"tabId": tab.id}),
 			((curry) => { return function(connectionError) {
@@ -42,7 +47,8 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
 					curry.tabId, {
 					call: "url",
 					type: "ConnectionError",
-					content: connectionError
+					content: connectionError,
+					request: info.linkUrl
 				});
 			};})({"tabId": tab.id}));
 	}

@@ -15,16 +15,16 @@ function Handler(
 		this.onConnectionError = onConnectionError;
 }
 
-Handler.prototype.onResponse = function(response) {
-	addReport(response.url, response);
+Handler.prototype.onResponse = function(response, request) {
+	addReport(response, request);
 };
 
-Handler.prototype.onErrorResponse = function(error) {
-	alert(this.name + " error response: " + error);
+Handler.prototype.onErrorResponse = function(error, request) {
+	alert(this.name + " error response for request " + request + ": " + error);
 }
 
-Handler.prototype.onConnectionError = function(error) {
-	alert(this.name + " connection error: " + error);
+Handler.prototype.onConnectionError = function(error, request) {
+	alert(this.name + " connection error for request " + request + ": " + error);
 }
 
 // listen for results of API calls.
@@ -33,7 +33,7 @@ browser.runtime.onMessage.addListener((message) => {
 	if(!handlers[message.call])
 		alert("invalid message.call '" + message.call + "'");
 
-	handlers[message.call]["on" + message.type](message.content);
+	handlers[message.call]["on" + message.type](message.content, message.request);
 });
 
 /** The handlers for API calls. */

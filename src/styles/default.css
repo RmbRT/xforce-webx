@@ -7,7 +7,12 @@
 	/* Hack to make the report take up no space. */
 	width: 400px;
 	margin-right: -400px;
+	height: 400px;
+	margin-bottom: -400px;
+	overflow: scroll;
+	z-index: 9999;
 	background-color:white;
+	color: black;
 	/* Hide reports. */
 	display: none !important;
 }

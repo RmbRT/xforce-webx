@@ -46,9 +46,9 @@ XForce.prototype.request = function(
 		{
 			var response;
 			if(typeof(https.response) === "string")
-				response = JSON.parse(https.response);
+				response = JSON.parse(https.response).result;
 			else
-				response = https.response;
+				response = https.response.result;
 
 			if(response["error"])
 				onErrorResponse(response.error);

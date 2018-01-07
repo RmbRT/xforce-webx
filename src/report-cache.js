@@ -28,7 +28,7 @@ ReportCache.prototype.findReport = function(url) {
 	const domain = urlDomain(url);
 	// try to find a report for the domain.
 	for(var i = 0; i < this._reports.length; i++)
-		if(domain === this._reports[i].url)
+		if(domain === urlDomain(this._reports[i].url))
 			return this._reports[i];
 
 	// no report found for `url`.
@@ -41,8 +41,9 @@ ReportCache.prototype.findReport = function(url) {
 @param report:
 	The JSON object returned by the X-Force API url report. */
 ReportCache.prototype.addReport = function(report) {
+	const domain = report.url;
 	for(var i = 0; i < this._reports.length; i++)
-		if(report.url === this._reports[i].url)
+		if(domain === urlDomain(this._reports[i].url))
 			throw new Error("Report for url '" + report.url + "' existed already.");
 
 	this._reports.push(report);
