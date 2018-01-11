@@ -13,7 +13,7 @@
 	"content_scripts": [
 		{
 			"matches": ["<all_urls>"],
-			"js": ["response.js", "extension.js"],
+			"js": ["htmlParser.js", "response.js", "extension.js"],
 			"css": ["styles/default.css"]
 		}
 	],
