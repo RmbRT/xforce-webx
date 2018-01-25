@@ -1,9 +1,9 @@
 body {
 	background-color: #ddd;
-	max-width: 200px;
-	min-width: 150px;
-	width: 200px;
+	max-width: 800px;
+	min-width: 200px;
 }
+
 div.context > * {
 	display: block;
 	width: 100%;

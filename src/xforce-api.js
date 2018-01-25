@@ -18,11 +18,11 @@ if(window.browser) {
 
 
 /** Creates a request to the XForce API.
-	Either onResponse or onError will be called.
+	Either onResponse or onErrorResponse or onConnectionError will be called.
 @param type:
 	The type of the request.
 @param arg:
-	The additional argument string for the request.
+	The additional argument string for the request. This must not be URI encoded.
 @param onResponse:
 	A callback that is called with the response.
 @param onErrorResponse:
@@ -38,7 +38,7 @@ XForce.prototype.request = function(
 	onConnectionError)
 {
 	var https = new XMLHttpRequest();
-	https.open("GET", "https://api.xforce.ibmcloud.com/" + type + "/" + arg, true);
+	https.open("GET", "https://api.xforce.ibmcloud.com/" + type + "/" + encodeURIComponent(arg), true);
 
 	https.onreadystatechange = function() {
 		// 4 == finished loading.
@@ -46,9 +46,9 @@ XForce.prototype.request = function(
 		{
 			var response;
 			if(typeof(https.response) === "string")
-				response = JSON.parse(https.response).result;
+				response = JSON.parse(https.response);
 			else
-				response = https.response.result;
+				response = https.response;
 
 			if(response["error"])
 				onErrorResponse(response.error);
@@ -76,8 +76,76 @@ XForce.prototype.urlReport = function(
 {
 	this.request(
 		"url",
-		encodeURIComponent(url),
+		url,
 		onResponse,
 		onErrorResponse,
 		onConnectionError);
 };
+
+XForce.prototype.collectionById = function(
+	id,
+	onResponse,
+	onErrorResponse,
+	onConnectionError)
+{
+	this.request(
+		"casefiles",
+		id,
+		onResponse,
+		onErrorResponse,
+		onConnectionError);
+};
+
+XForce.prototype.publicCollections = function(
+	onResponse,
+	onErrorResponse,
+	onConnectionError)
+{
+	this.request(
+		"casefiles/public",
+		"",
+		onResponse,
+		onErrorResponse,
+		onConnectionError);
+};
+
+XForce.prototype.sharedCollections = function(
+	onResponse,
+	onErrorResponse,
+	onConnectionError)
+{
+	this.request(
+		"casefiles/shared",
+		"",
+		onResponse,
+		onErrorResponse,
+		onConnectionError);
+};
+
+XForce.prototype.privateCollections = function(
+	onResponse,
+	onErrorResponse,
+	onConnectionError)
+{
+	this.request(
+		"casefiles/private",
+		"",
+		onResponse,
+		onErrorResponse,
+		onConnectionError);
+};
+
+XForce.prototype.collectionsByGroupId = function(
+	id,
+	onResponse,
+	onErrorResponse,
+	onConnectionError)
+{
+	this.request(
+		"casefiles/group",
+		id,
+		onResponse,
+		onErrorResponse,
+		onConnectionError);
+};
+

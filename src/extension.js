@@ -38,5 +38,6 @@ browser.runtime.onMessage.addListener((message) => {
 
 /** The handlers for API calls. */
 var handlers = {
-	"url": new Handler("URL report")
+	"url": new Handler("URL report"),
+	"casefiles": new Handler("Collection"),
 };
