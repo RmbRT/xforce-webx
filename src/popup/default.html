@@ -3,14 +3,23 @@
 	<head>
 		<meta charset="utf-8" />
 		<link href="../styles/popup.css" rel="stylesheet" type="text/css" />
+		<script src="../xforce-api.js"></script>
+		<script src="collections.js"></script>
 	</head>
 	<body>
 		<details>
-			<summary>Commands</summary>
-			<div class="context">
-				<a class="interactive">Scan Links</a>
-				<a class="interactive">Report this site</a>
-			</div>
+			<summary>Collections</summary>
+			<p>
+				<input type="text" placeholder="ID/Group ID" id="search" />
+			</p>
+			<p><b>Search type:</b></p>
+			<p>
+				<button id="btn-id">ID</button>
+				<button id="btn-group-id">Group ID</button>
+				<button id="btn-public">Public</button>
+				<button id="btn-private">Private</button>
+				<button id="btn-shared">Shared</button>
+			</p>
 		</details>
 		<details>
 			<summary>About</summary>
