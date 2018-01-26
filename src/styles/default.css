@@ -7,14 +7,67 @@
 	/* Hack to make the report take up no space. */
 	width: 400px;
 	margin-right: -400px;
-	height: 400px;
-	margin-bottom: -400px;
-	overflow: scroll;
+	height: 100px;
+	margin-bottom: -100px;
+	overflow: auto;
 	z-index: 9999;
 	background-color:white;
-	color: black;
+	border:black solid 1px;
+
 	/* Hide reports. */
 	display: none !important;
+}
+
+.center{
+	text-align: center;
+	font-weight: bold;
+	color: black;
+	
+}
+
+.low-risk{
+	position: absolute;
+
+	top:0;
+	left: 0;
+	width: 50px;
+	height: 50px;
+	background-color: green; 
+}
+
+.medium-risk{
+	position: absolute;
+
+	top:0;
+	left: 0;
+	width: 50px;
+	height: 50px;
+	background-color: yellow; 
+}
+.high-risk{
+	position: absolute;
+
+	top:0;
+	left: 0;
+	width: 50px;
+	height: 50px;
+	background-color: red; 
+}
+.domain{
+	position: absolute;
+	font-weight: bold;
+	font-size: large;
+	color: black;
+	top:25px;
+	left:60px;
+}
+
+.cats{
+	position: absolute;
+	font-weight: bold;
+	color: black;
+	top:55px;
+	left:0px;
 }
 
 /* Only show reports for links that are hovered. */
