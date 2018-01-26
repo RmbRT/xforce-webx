@@ -22,15 +22,33 @@ function addReport(report, request) {
 			// add the report style.
 			e.classList.add("xforce-api-report");
 
-			var hScore = document.createElement("h2");
-			hScore.innerText = "Score: " + report.score;
-			e.appendChild(hScore);
+			var score = document.createElement("div");
+			
+			var hScore = document.createElement("div");
+			hScore.innerText = "Score";
+			hScore.classList.add("center");
+			score.appendChild(hScore);
 
-			var hCats = document.createElement("h2");
-			hCats.innerText = "Categories";
+			var risk = document.createElement("div");
+			risk.innerText = report.score;
+			risk.classList.add("center");
+			score.appendChild(risk);
+			switch(true){
+				case report.score < 4: score.classList.add("low-risk");
+				break;
+				case report.score> 4 && report.risk < 7: score.classList.add("medium-risk");
+				break;
+				default: score.classList.add("high-risk");
+			}
+			e.appendChild(score);
+
+			var hCats = document.createElement("div");
+			hCats.classList.add("domain");
+			hCats.innerText = "Domain: " + hostname;
 			e.appendChild(hCats);
 
 			var tCats = document.createElement("p");
+			tCats.classList.add("cats");
 			var catString = "";
 			
 			for(var cat in report.cats)
