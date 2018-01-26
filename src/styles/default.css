@@ -6,13 +6,15 @@
 	top: 0;
 	/* Hack to make the report take up no space. */
 	width: 400px;
-	margin-right: -400px;
-	height: 100px;
-	margin-bottom: -100px;
+	margin-right: -402px;
+	height: 200px;
+	margin-bottom: -202px;
 	overflow: auto;
 	z-index: 9999;
 	background-color:white;
 	border:black solid 1px;
+
+	font-family: sans-serif;
 
 	/* Hide reports. */
 	display: none !important;
