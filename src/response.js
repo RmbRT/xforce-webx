@@ -10,7 +10,7 @@ const urlDomain = ((a)=> { return function(url) {
 	The report returned by the X-Force API.
 @param request:
 	The requested url. */
-function addReport(report, request) {
+const addReport = ((globalReport) => { return function(report, request) {
 	var links = document.getElementsByTagName("a");
 	const hostname = urlDomain(request);
 
@@ -61,7 +61,22 @@ function addReport(report, request) {
 			tCats.innerText = catString;
 			e.appendChild(tCats);
 			
-			// insert the report into the page.
-			links[i].insertBefore(e, links[i].firstChild);
+
+			e.addEventListener("mouseleave", function() {
+				document.body.removeChild(this);
+				globalReport = null;
+			});
+
+			links[i].addEventListener("mouseenter", ((curry) => { return function() {
+				var rect = this.getBoundingClientRect();
+				curry.style.top = (rect.bottom + 5) + "px";
+				curry.style.left = (rect.left) + "px";
+
+				if(globalReport)
+					document.body.removeChild(globalReport);
+
+				document.body.appendChild(curry);
+				globalReport = curry;
+			};})(e));
 		}
-}
+};})(null);

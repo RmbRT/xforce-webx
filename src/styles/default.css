@@ -1,6 +1,6 @@
 /* The report style. */
 .xforce-api-report {
-	position: relative;
+	position: fixed;
 	/* Offset. */
 	left: 0;
 	top: 0;
@@ -15,9 +15,6 @@
 	border:black solid 1px;
 
 	font-family: sans-serif;
-
-	/* Hide reports. */
-	display: none !important;
 }
 
 .center{
