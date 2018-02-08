@@ -19,10 +19,12 @@ const addReport = ((globalReport) => { return function(report, request) {
 		{
 			// create the report html element.
 			var e = document.createElement("span");
-			// add the report style.
-			e.classList.add("xforce-api-report");
+			
 
-			var score = document.createElement("div");
+			// add the report style.
+			
+
+			/*var score = document.createElement("div");
 			
 			var hScore = document.createElement("div");
 			hScore.innerText = "Score";
@@ -48,7 +50,7 @@ const addReport = ((globalReport) => { return function(report, request) {
 			e.appendChild(hCats);
 
 			var tCats = document.createElement("p");
-			tCats.classList.add("cats");
+			tCats.classList.add("cats");*/
 			var catString = "";
 			
 			for(var cat in report.cats)
@@ -58,9 +60,13 @@ const addReport = ((globalReport) => { return function(report, request) {
 
 				catString += cat;
 			}
-			tCats.innerText = catString;
-			e.appendChild(tCats);
 			
+		
+			
+			var hoststring =  '<div id="DIV_1"><div id="DIV_2" class="low-risk"><div id="DIV_3">Risk</div><div id="DIV_4">1</div></div><div id="DIV_5"><div id="DIV_6"><h2 id="H2_7"> <span id="SPAN_8">X-Force URL Report</span><div id="DIV_9"><span id="SPAN_10">hostname</span><!----></div></h2><div id="DIV_13"><!----><button type="button" id="BUTTON_14" disabled="enabled"></button></div><!----></div><div id="DIV_38"><h3 id="H3_39">Details</h3><table id="TABLE_40"><caption id="CAPTION_41"></caption><tbody id="TBODY_44"><tr id="TR_49"><th id="TH_50">Categorization</th><td id="TD_51"><!----><ul id="UL_52"><!----><li id="LI_53">cats</li><!----></ul></td></tr></tbody></table></div></div></div>'.replace('hostname', hostname);
+			var cat = hoststring.replace('cat', catString);
+			e.innerHTML = cat;
+			e.classList.add("xforce-api-report");
 
 			e.addEventListener("mouseleave", function() {
 				document.body.removeChild(this);
