@@ -81,6 +81,8 @@ Config.defaultJSON = {
 	"threat_medium": 4,
 	"threat_high": 7
 };
+/** Default config object. */
+Config.default = Config.fromJSON(Config.defaultJSON);
 
 /** Loads the configuration.
 @param then:
@@ -118,9 +120,9 @@ Config.load = function(then, fail) {
 	If the arguments were not of the right type. */
 Config.prototype.save = function(then, fail) {
 	// check argument types.
-	if(typeof(then) !== "function" || then.arguments !== 1)
+	if(typeof(then) !== "function")
 		throw new TypeError("then must be a function taking 1 argument.");
-	else if(typeof(fail) !== "function" || fail.arguments !== 1)
+	else if(typeof(fail) !== "function")
 		throw new TypeError("fail must be a function taking 1 argument.");
 
 	// attempt to save the configuration object.

@@ -26,8 +26,6 @@
 <body>
 	<!-- Errors are displayed here. -->
 	<div id="error" style="color: red;"></div>
-	<!-- Success messages are displayed here. -->
-	<div id="success" style="color: green;"></div>
 	<!-- The settings form. -->
 	<form id="form">
 		<div class="field">
@@ -58,18 +56,29 @@
 		<div class="field">
 				<label for="threat-medium">Minimum medium threat level <input type="number" id="threat-medium" min="0" max="10"/></label>
 				<input type="button" id="default-medium" value="default" />
-			<p class="hint">
-				The minimum threat level (all medium threats &ge; this value) that is regarded as medium threat. This value must be &lt; the high threat level value.
+				<span class="invalid-msg" id="invalid-medium">
+					This value must be a number from 0 to 10 that is &lt; the high threat level value.
+				</span>
+				<p class="hint">
+				The minimum threat level (all medium threats &ge; this value) that is regarded as medium threat.
 			</p>
 		</div>
 		<div class="field">
 			<label for="threat-high">Minimum high threat level <input type="number" id="threat-high" min="0" max="10" /></label>
-			<input type="button" id="default-medium" value="default" />
+			<input type="button" id="default-high" value="default" />
+			<span class="invalid-msg" id="invalid-high">
+				This value must be a number from 0 to 10 that is &gt; the medium threat level value.
+			</span>
 			<p class="hint">
-				The minimum threat level (all high threats &ge; this value) that is regarded as a high threat. This value must be &gt; the medium threat level value.
+				The minimum threat level (all high threats &ge; this value) that is regarded as a high threat.
 			</p>
 		</div>
-		<div><input type="button" value="Save changes" id="save" /></div>
+		<div>
+			<input type="button" value="Save changes" id="save" />
+			<input type="button" value="Reset changes" id="reset" />
+		</div>
+	<!-- Success messages are displayed here. -->
+	<p id="success" style="color: green;"></p>
 	</form>
 </body>
 </html>
