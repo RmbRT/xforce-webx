@@ -1,5 +1,5 @@
 .xforce-api-report {
-	position: fixed;
+	position: absolute;
 	/* Offset. */
 	left: 0;
 	top: 0;
