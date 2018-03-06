@@ -2,16 +2,74 @@
 <html>
 <head>
 	<meta charset="utf-8">
+	<!-- The config interface. -->
+	<script src="config.js"></script>
+	<!-- The option page script. -->
 	<script src="options.js"></script>
+	<style type="text/css">
+	p.hint {
+		margin-top: 0;
+		color: #0008;
+	}
+	div.field {
+		margin: 1em auto; /**/
+	}
+	span.invalid-msg {
+		color: red;
+		display: none;
+	}
+	span.invalid-msg.invalid {
+		display: inline-block;
+	}
+	</style>
 </head>
 <body>
 	<!-- Errors are displayed here. -->
 	<div id="error" style="color: red;"></div>
+	<!-- Success messages are displayed here. -->
+	<div id="success" style="color: green;"></div>
 	<!-- The settings form. -->
 	<form id="form">
-		<p>Username <input type="text" id="username" /></p>
-		<p>Password <input type="password" id="password" /></p>
-		<div><input type="submit" value="Save" /></div>
+		<div class="field">
+			<label for="name">Username <input type="text" id="name" /></label>
+			<span class="invalid-msg" id="invalid-name">
+				The username is required.
+			</span>
+			<p class="hint">
+				Insert the IBM X-Force user name in this field.
+			</p>
+		</div>
+		<div class="field">
+			<label for="password">Password <input type="password" id="password" /></label>
+			<span class="invalid-msg" id="invalid-password">
+				The password is required.
+			</span>
+			<p class="hint">
+				Insert the IBM X-Force password in this field.
+			</p>
+		</div>
+		<div class="field">
+			<input type="checkbox" id="auto-check" />
+			<label for="auto-check">Auto-Check pages on visit.</label>
+			<p class="hint">
+				If enabled, automatically checks the threat level of any visited site.
+			</p>
+		</div>
+		<div class="field">
+				<label for="threat-medium">Minimum medium threat level <input type="number" id="threat-medium" min="0" max="10"/></label>
+				<input type="button" id="default-medium" value="default" />
+			<p class="hint">
+				The minimum threat level (all medium threats &ge; this value) that is regarded as medium threat. This value must be &lt; the high threat level value.
+			</p>
+		</div>
+		<div class="field">
+			<label for="threat-high">Minimum high threat level <input type="number" id="threat-high" min="0" max="10" /></label>
+			<input type="button" id="default-medium" value="default" />
+			<p class="hint">
+				The minimum threat level (all high threats &ge; this value) that is regarded as a high threat. This value must be &gt; the medium threat level value.
+			</p>
+		</div>
+		<div><input type="button" value="Save changes" id="save" /></div>
 	</form>
 </body>
 </html>

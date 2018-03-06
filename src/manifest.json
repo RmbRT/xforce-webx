@@ -13,7 +13,7 @@
 	"content_scripts": [
 		{
 			"matches": ["<all_urls>"],
-			"js": ["htmlParser.js", "response.js", "extension.js"],
+			"js": ["htmlParser.js", "config.js", "response.js", "extension.js"],
 			"css": ["styles/default.css"]
 		}
 	],
@@ -21,6 +21,7 @@
 	"background": {
 		"scripts": [
 			"background.js",
+			"config.js",
 			"xforce-api.js",
 			"report-cache.js"
 		]
