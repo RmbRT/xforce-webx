@@ -10,9 +10,9 @@ function XForce(user, password) {
 // only executes if part of the plugin (and not directly included into a HTML document).
 if(window.browser) {
 	// load the username and password from the plugin settings.
-	browser.storage.local.get(["username", "password"]).then((o) => {
+	browser.storage.local.get(["name", "password"]).then((o) => {
 		// create the global API object.
-		window.XForceAPI = new XForce(o.username, o.password);
+		window.XForceAPI = new XForce(o.name, o.password);
 	});
 }
 
