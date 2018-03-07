@@ -81,8 +81,25 @@ Config.defaultJSON = {
 	"threat_medium": 4,
 	"threat_high": 7
 };
+
 /** Default config object. */
 Config.default = Config.fromJSON(Config.defaultJSON);
+
+/** Listens for config updates.
+@param callback:
+	A function(config) that listens for updates.
+	@param config:
+		The new config value. */
+Config.listenForUpdates = function(callback) {
+	Messaging.listen("Config.update", ((callback) => { return function(o) {
+		callback(Config.fromJSON(o));
+	}; })(callback));
+};
+
+/** Sends the config object to the background script. */
+Config.prototype.sendUpdate = function() {
+	Messaging.sendToBackground("Config.update", this.toJSON());
+};
 
 /** Loads the configuration.
 @param then:
@@ -124,6 +141,9 @@ Config.prototype.save = function(then, fail) {
 		throw new TypeError("then must be a function taking 1 argument.");
 	else if(typeof(fail) !== "function")
 		throw new TypeError("fail must be a function taking 1 argument.");
+
+	// notify the background script for a updated configuration. 
+	this.sendUpdate();
 
 	// attempt to save the configuration object.
 	browser.storage.local.set(this.toJSON()).then(then).catch(fail);

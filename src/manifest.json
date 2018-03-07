@@ -13,13 +13,14 @@
 	"content_scripts": [
 		{
 			"matches": ["<all_urls>"],
-			"js": ["htmlParser.js", "config.js", "response.js", "extension.js"],
+			"js": ["messaging.js", "htmlParser.js", "config.js", "response.js", "extension.js"],
 			"css": ["styles/default.css"]
 		}
 	],
 
 	"background": {
 		"scripts": [
+			"messaging.js",
 			"background.js",
 			"config.js",
 			"xforce-api.js",
