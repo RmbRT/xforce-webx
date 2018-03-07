@@ -1,4 +1,8 @@
 var Collections = {
+	convertToHTML : function (json) {
+		return  '<div class="collectionItem">Name:templateName ID:templateID Autor:TemplateAutor </div>'.replace('templateName', json.title).replace('templateID', json.caseFileID).replace('TemplateAutor', json.owner.name);
+
+	}
 	getById : function() {
 		XForceAPI.colelctionById(
 			document.getElementById("search").value,
@@ -37,7 +41,12 @@ var Collections = {
 	getPrivate: function() {
 		XForceAPI.privateCollections(
 			function(result) {
-				alert(JSON.stringify(result));
+				var privateList = result.casefiles;
+				var result = "";
+				for(var i = 0; i < privateList.length; i++){
+					result += convertToHTML(privateList[i]);
+				}
+				document.getElementById("private").innerHTML = result;
 			},
 			function(error) {
 				alert(JSON.stringify(error));
@@ -48,7 +57,13 @@ var Collections = {
 	getShared: function() {
 		XForceAPI.sharedCollections(
 			function(result) {
-				alert(JSON.stringify(result));
+				var sharedList = result.casefiles;
+				var result = "";
+				for(var i = 0; i < sharedList.length; i++){
+					result += convertToHTML(sharedList[i]);
+				}
+				document.getElementById("shared").innerHTML = result;
+
 			},
 			function(error) {
 				alert(JSON.stringify(error));
@@ -81,7 +96,12 @@ var Collections = {
 			}, function(error) {
 				alert(JSON.stringify(error));
 			});
+
 	}
+	gatherCollections: function() {
+
+	}
+
 
 };
 
