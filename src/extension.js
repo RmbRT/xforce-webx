@@ -41,3 +41,14 @@ var handlers = {
 	"url": new Handler("URL report"),
 	"casefiles": new Handler("Collection"),
 };
+
+Messaging.sendToBackground("request-report", document.URL).then(report => {
+	// are automatic checks enabled?
+	if(report !== null) {
+		// now, the report for the visited site has to be visualised.
+
+	} else {
+		// automatic checks are disabled.
+
+	}
+}).catch((error) => console.error("error", error));

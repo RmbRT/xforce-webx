@@ -11,8 +11,8 @@ const Messaging = {
 		@return
 			The response to the received message, or nothing. If an asynchronous response is wanted, then a Promise has to be returned. */
 	listen: function(channel, handler) {
-		browser.runtime.onMessage.addListener(((channel, handler) => { return function(message, sender, sendResponse) {
-			// only pass messages that are over the requested channel.
+		var ret = browser.runtime.onMessage.addListener(((channel, handler) => { return function(message, sender, sendResponse) {
+			// only pass messages that are sent over the requested channel.
 			if(message.channel === channel) {
 				// pass the message to the handler.
 				const reply = handler(message.message, message.channel);
@@ -20,7 +20,7 @@ const Messaging = {
 				if(reply && Promise.resolve(reply) == reply)
 					return reply;
 				// otherwise, if it is a message, send it.
-				else if(reply)
+				else if(reply !== undefined)
 					sendResponse(reply);
 			}
 		}; })(channel, handler));

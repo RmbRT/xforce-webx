@@ -4,32 +4,32 @@ browser.contextMenus.create({
 	contexts: ["link"]
 });
 
+function getReport(url, success, errorResponse, connectionError) {
+	// is the report cached already?
+	var report;
+	if(report = reportCache.findReport(url))
+		success(report.result);
+	else
+		XForceAPI.urlReport(
+			url,
+			((success) => { return function(response) {
+				reportCache.addReport(response);
+				success(response.result);
+			}; })(success),
+			errorResponse,
+			connectionError);
+}
+
 browser.contextMenus.onClicked.addListener((info, tab) => {
 	if(info.menuItemId === "get URL report") {
-		// is the report cached already?
-		var report;
-		if(report = reportCache.findReport(info.linkUrl))
-		{
-			browser.tabs.sendMessage(
-				tab.id, {
-				call: "url",
-				type: "Response",
-				content: report
-			});
-			return;
-		}
-		// otherwise, request report.
-		// the tab id has to be curried into the event handlers.
-		XForceAPI.urlReport(
+		getReport(
 			info.linkUrl,
 			((curry) => { return function(response) {
-				// add the report to the cache.
-				reportCache.addReport(response);
 				browser.tabs.sendMessage(
 					curry.tabId, {
 					call: "url",
 					type: "Response",
-					content: response.result,
+					content: result,
 					request: info.linkUrl
 				});
 			};})({"tabId": tab.id}),
@@ -52,4 +52,24 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
 				});
 			};})({"tabId": tab.id}));
 	}
+});
+
+var config = null;
+Config.load((c) => {
+	config = c;
+}, e => console.error("Could not load config", e));
+
+Config.listenForUpdates((c) => { config = c; } );
+
+Messaging.listen("request-report", (request) => {
+	if(config && config.autoCheck()) {
+		return new Promise(((request) => { return (resolve, reject) => {
+			getReport(
+				request,
+				resolve,
+				error => reject({error: error, type: "Error Response"}),
+				error => reject({error: error, type: "Connection Error"}));
+		}; })(request));
+	} else
+		return null;
 });

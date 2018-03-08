@@ -21,8 +21,8 @@
 	"background": {
 		"scripts": [
 			"messaging.js",
-			"background.js",
 			"config.js",
+			"background.js",
 			"xforce-api.js",
 			"report-cache.js"
 		]
