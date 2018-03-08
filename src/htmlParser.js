@@ -37,7 +37,6 @@ function replaceTextNode(textNode, regex) {
 }
 
 function traverseHelper(rootNode){
-	console.log(rootNode.nodeName);
 	if(rootNode.nodeType === Node.TEXT_NODE)
 	{
 		replaceTextNode(rootNode, regexv4);
@@ -49,8 +48,6 @@ function traverseHelper(rootNode){
 		// skip forbidden tags.
 		if(rootNode.tagName in ForbiddenTags)
 			return;
-
-		console.log(rootNode);
 	
 		for(var it = rootNode.firstChild; it !== null; it = it.nextSibling) {
 			traverseHelper(it);
