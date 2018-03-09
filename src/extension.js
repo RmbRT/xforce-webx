@@ -45,10 +45,12 @@ var handlers = {
 Messaging.sendToBackground("request-report", document.URL).then(report => {
 	// are automatic checks enabled?
 	if(report !== null) {
-		// now, the report for the visited site has to be visualised.
+		var threatLevel = report.score;
+		//browser.browserAction.setIcon("/images/square.png");
+		alert(threatLevel);
 
 	} else {
 		// automatic checks are disabled.
 
 	}
-}).catch((error) => console.error("error", error));
+}).catch((error) => console.error("error", JSON.stringify(error)));
