@@ -29,7 +29,7 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
 					curry.tabId, {
 					call: "url",
 					type: "Response",
-					content: result,
+					content: response,
 					request: info.linkUrl
 				});
 			};})({"tabId": tab.id}),
