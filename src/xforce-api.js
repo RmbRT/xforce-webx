@@ -138,7 +138,7 @@ XForce.prototype.privateCollections = function(
 {
 	this.request(
 		"GET",
-		"casefiles/private",
+		"casefiles",
 		null,
 		onResponse,
 		onErrorResponse,
