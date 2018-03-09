@@ -38,38 +38,50 @@ var Collections = {
 				alert(JSON.stringify(error));
 			});
 	},
+	outputCollections: function(targetId, collections) {
+		var result = "";
+		for(var i = 0; i < collections.length; i++){
+			result += Collections.convertToHTML(collections[i]);
+		}
+		document.getElementById(targetId).innerHTML = result;
+	},
 	getPrivate: function() {
-		XForceAPI.privateCollections(
-			function(result) {
-				var privateList = result.casefiles;
-				var result = "";
-				for(var i = 0; i < privateList.length; i++){
-					result += Collections.convertToHTML(privateList[i]);
-				}
-				document.getElementById("private").innerHTML = result;
-			},
-			function(error) {
-				alert(JSON.stringify(error));
-			}, function(error) {
-				alert(JSON.stringify(error));
-			});
+		Messaging.sendToBackground("privateCollections.all").then((c) => {
+			if(c !== null)
+				Collections.outputCollections("private", c);
+			else
+				XForceAPI.privateCollections(
+					function(result) {
+						Messaging.sendToBackground("privateCollections.add", result.casefiles);
+						Collections.outputCollections("private", result.casefiles);
+					},
+					function(error) {
+						alert(JSON.stringify(error));
+					}, function(error) {
+						alert(JSON.stringify(error));
+					});
+		}).catch((error) => {
+			alert(JSON.stringify(error));
+		});
 	},
 	getShared: function() {
-		XForceAPI.sharedCollections(
-			function(result) {
-				var sharedList = result.casefiles;
-				var result = "";
-				for(var i = 0; i < sharedList.length; i++){
-					result += Collections.convertToHTML(sharedList[i]);
-				}
-				document.getElementById("shared").innerHTML = result;
-
-			},
-			function(error) {
-				alert(JSON.stringify(error));
-			}, function(error) {
-				alert(JSON.stringify(error));
-			});
+		Messaging.sendToBackground("sharedCollections.all").then((c) => {
+			if(c !== null)
+				Collections.outputCollections("private", c);
+			else
+				XForceAPI.sharedCollections(
+					function(result) {
+						Messaging.sendToBackground("sharedCollections.add", result.casefiles);
+						Collections.outputCollections("shared", result.casefiles);
+					},
+					function(error) {
+						alert(JSON.stringify(error));
+					}, function(error) {
+						alert(JSON.stringify(error));
+					});
+		}).catch((error) => {
+			alert(JSON.stringify(error));
+		});
 	},
 	addURLReport: function(id, url) {
 		XForceAPI.addURLReportToCollection(
@@ -106,10 +118,13 @@ var Collections = {
 document.addEventListener("DOMContentLoaded", function() {
 
 	var intervalId = setInterval(() => {
-		Collections.getPrivate();
-		Collections.getShared();
-		if(XForceAPI)
+		// wait until the XForceAPI object is properly set up.
+		if(XForceAPI) {
+			Collections.getPrivate();
+			Collections.getShared();
+
 			clearInterval(intervalId);
+		}
 	}, 10);
 
 	

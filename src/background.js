@@ -73,3 +73,23 @@ Messaging.listen("request-report", (request) => {
 	} else
 		return null;
 });
+
+Messaging.listen("privateCollections.add", (c) => {
+	for(var i = 0; i < c.length; i++)
+		if(!privateCollections.findCollection(c[i]))
+			privateCollections.addCollection(c[i]);
+});
+
+Messaging.listen("privateCollections.all", () => {
+	return privateCollections._collections;
+});
+
+Messaging.listen("sharedCollections.add", (c) => {
+	for(var i = 0; i < c.length; i++)
+		if(!sharedCollections.findCollection(c[i]))
+			sharedCollections.addCollection(c[i]);
+});
+
+Messaging.listen("sharedCollections.all", () => {
+	return sharedCollections.all;
+});
