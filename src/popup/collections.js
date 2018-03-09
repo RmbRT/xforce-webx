@@ -4,7 +4,7 @@ var Collections = {
 
 	},
 	getById : function() {
-		XForceAPI.colelctionById(
+		XForceAPI.collectionById(
 			document.getElementById("search").value,
 			function(result) {
 				alert(JSON.stringify(result));
@@ -102,8 +102,6 @@ var Collections = {
 	gatherCollections: function() {
 
 	}
-
-
 };
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -114,4 +112,4 @@ document.addEventListener("DOMContentLoaded", function() {
 	document.getElementById("btn-shared").addEventListener("click", Collections.getShared);
 	document.getElementById("btn-add-url").addEventListener("click", Collections.addURLReport);
 	document.getElementById("btn-add-ip").addEventListener("click", Collections.addIPReport);
-})
+});
