@@ -1,6 +1,6 @@
 var Collections = {
 	convertToHTML : function (json) {
-		return  '<div class="collectionItem">Name:templateName ID:templateID Autor:TemplateAutor </div>'.replace('templateName', json.title).replace('templateID', json.caseFileID).replace('TemplateAutor', json.owner.name);
+		return  '<input type="radio" class="collectionItem" name="collItem" value="templateID"><b>Name</b>: templateName <b>Autor</b>: TemplateAutor </input><br>'.replace('templateName', json.title).replace('templateID',json.caseFileiID).replace('TemplateAutor', json.owner.name);
 
 	},
 	getById : function() {
@@ -67,7 +67,7 @@ var Collections = {
 	getShared: function() {
 		Messaging.sendToBackground("sharedCollections.all").then((c) => {
 			if(c !== null)
-				Collections.outputCollections("private", c);
+				Collections.outputCollections("shared", c);
 			else
 				XForceAPI.sharedCollections(
 					function(result) {
