@@ -41,7 +41,6 @@ var Collections = {
 	getPrivate: function() {
 		XForceAPI.privateCollections(
 			function(result) {
-				alert(result);
 				var privateList = result.casefiles;
 				var result = "";
 				for(var i = 0; i < privateList.length; i++){
@@ -105,11 +104,13 @@ var Collections = {
 };
 
 document.addEventListener("DOMContentLoaded", function() {
-	document.getElementById("btn-id").addEventListener("click", Collections.getById);
-	document.getElementById("btn-group-id").addEventListener("click", Collections.getByGroupId);
-	document.getElementById("btn-public").addEventListener("click", Collections.getPublic);
-	document.getElementById("btn-private").addEventListener("click", Collections.getPrivate);
-	document.getElementById("btn-shared").addEventListener("click", Collections.getShared);
-	document.getElementById("btn-add-url").addEventListener("click", Collections.addURLReport);
-	document.getElementById("btn-add-ip").addEventListener("click", Collections.addIPReport);
-});
+
+	var intervalId = setInterval(() => {
+		Collections.getPrivate();
+		Collections.getShared();
+		if(XForceAPI)
+			clearInterval(intervalId);
+	}, 10);
+
+	
+});	
