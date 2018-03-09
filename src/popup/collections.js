@@ -56,12 +56,12 @@ var Collections = {
 						Collections.outputCollections("private", result.casefiles);
 					},
 					function(error) {
-						alert(JSON.stringify(error));
+						alert("[getPrivate] Error Response: " + JSON.stringify(error));
 					}, function(error) {
-						alert(JSON.stringify(error));
+						alert("[getPrivate] Connection Error: " + JSON.stringify(error));
 					});
 		}).catch((error) => {
-			alert(JSON.stringify(error));
+			console.error("[getPrivate] Messaging error", JSON.stringify(error), error);
 		});
 	},
 	getShared: function() {
@@ -75,12 +75,12 @@ var Collections = {
 						Collections.outputCollections("shared", result.casefiles);
 					},
 					function(error) {
-						alert(JSON.stringify(error));
+						alert("[getShared] Error Response: " + JSON.stringify(error));
 					}, function(error) {
-						alert(JSON.stringify(error));
+						alert("[getShared] Connection Error: " + JSON.stringify(error));
 					});
 		}).catch((error) => {
-			alert(JSON.stringify(error));
+			console.error("[getShared] Messaging error", JSON.stringify(error), error);
 		});
 	},
 	addURLReport: function(id, url) {
