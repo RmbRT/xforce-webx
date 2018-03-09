@@ -24,7 +24,8 @@
 			"config.js",
 			"background.js",
 			"xforce-api.js",
-			"report-cache.js"
+			"report-cache.js",
+			"collection-cache.js"
 		]
 	},
 
