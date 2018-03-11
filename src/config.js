@@ -37,7 +37,7 @@ function Config(
 
 	// check and set threat_medium.
 	if(typeof(threat_medium) !== "number")
-		throw new TypeEError("threat_medium must be a number.");
+		throw new TypeError("threat_medium must be a number.");
 	else
 		this._threat_medium = threat_medium;
 
