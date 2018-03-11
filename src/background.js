@@ -54,6 +54,25 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
 	}
 });
 
+var activeCollection = null;
+Messaging.listen("Collection.select", (id) => {
+	activeCollection = id;
+});
+
+Messaging.listen("Collection.addReport", (url) => {
+	if(activeCollection !== null)
+		return new Promise((resolve, reject) => {
+			XForceAPI.addURLReportToCollection(
+				activeCollection,
+				url,
+				resolve,
+				reject,
+				reject);
+		});
+	else
+		return new Promise((resolve, reject) => { reject("No collection selected."); });
+});
+
 var config = null;
 Config.load((c) => {
 	config = c;

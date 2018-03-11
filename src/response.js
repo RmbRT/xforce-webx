@@ -15,7 +15,8 @@ const addReport = ((globalReport) => { return function(report, request) {
 	const hostname = urlDomain(request);
 
 	for(var i = 0; i < links.length; i++)
-		if(links[i].hasAttribute("href") && links[i].hostname == hostname)
+		if(links[i].hasAttribute("href") &&links[i].href === request)
+		//&& links[i].hostname == hostname)
 		{
 			// create the report html element.
 			var e = document.createElement("span");
@@ -54,18 +55,57 @@ const addReport = ((globalReport) => { return function(report, request) {
 			var catString = "";
 			
 			for(var cat in report.cats)
-			{
-				if(catString.length)
-					catString += ", ";
-
-				catString += cat;
-			}
+				catString += `<li class="LI_53">${cat}</li>`;
 			
 		
 			
-			var hoststring =  '<div id="DIV_1"><div id="DIV_2" class="low-risk"><div id="DIV_3">Risk</div><div id="DIV_4">1</div></div><div id="DIV_5"><div id="DIV_6"><h2 id="H2_7"> <span id="SPAN_8">X-Force URL Report</span><div id="DIV_9"><span id="SPAN_10">hostname</span><!----></div></h2><div id="DIV_13"><!----><button type="button" id="BUTTON_14" disabled="enabled"></button></div><!----></div><div id="DIV_38"><h3 id="H3_39">Details</h3><table id="TABLE_40"><caption id="CAPTION_41"></caption><tbody id="TBODY_44"><tr id="TR_49"><th id="TH_50">Categorization</th><td id="TD_51"><!----><ul id="UL_52"><!----><li id="LI_53">cats</li><!----></ul></td></tr></tbody></table></div></div></div>'.replace('hostname', hostname);
-			var cat = hoststring.replace('cat', catString);
-			e.innerHTML = cat;
+			e.innerHTML =
+`<div class="DIV_1">
+	<div class="DIV_2" class="low-risk">
+		<div class="DIV_3">Risk</div>
+		<div class="DIV_4">${report.score}</div>
+	</div>
+	<div class="DIV_5">
+		<div class="DIV_6">			
+			<h2 class="H2_7">
+				<div class="DIV_13">
+					<button type="button" class="BUTTON_14">Add to Collection</button>
+				</div>
+				<span class="SPAN_8">X-Force URL Report</span>
+				<div class="DIV_9">
+					<span class="SPAN_10">${hostname}</span>
+				</div>
+			</h2>
+		</div>
+		<div class="DIV_38">
+			<h3 class="H3_39">Details</h3>
+			<table class="TABLE_40">
+				<caption class="CAPTION_41">
+				</caption>
+				<tbody class="TBODY_44">
+					<tr class="TR_49">
+						<th class="TH_50">Categorization</th>
+						<td class="TD_51">
+							<ul class="UL_52">${catString}</ul>
+						</td>
+					</tr>
+					<tr class="TR_49">
+						<th class="TH_50">Full URL</th>
+						<td class="TD_51">${request}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+</div>
+</div>`;
+			e.querySelector("button").addEventListener("click", (url => { return function() {
+				Messaging.sendToBackground("Collection.addReport", url).then(()=>{
+					alert("Success");
+				}).catch((e)=>{
+					alert("Error: " + JSON.stringify(e));
+				});
+			}; })(request));
+
 			e.classList.add("xforce-api-report");
 
 			e.addEventListener("mouseleave", function() {
@@ -75,8 +115,8 @@ const addReport = ((globalReport) => { return function(report, request) {
 
 			links[i].addEventListener("mouseenter", ((curry) => { return function() {
 				var rect = this.getBoundingClientRect();
-				curry.style.top = (rect.bottom + 5) + "px";
-				curry.style.left = (rect.left) + "px";
+				curry.style.top = window.scrollY + (rect.bottom + 5) + "px";
+				curry.style.left = window.scrollX + (rect.left) + "px";
 
 				if(globalReport)
 					document.body.removeChild(globalReport);
