@@ -1,7 +1,56 @@
 var Collections = {
-	convertToHTML : function (json) {
-		return  '<input type="radio" class="collectionItem" name="collItem" value="templateID"><b>Name</b>: templateName <b>Autor</b>: TemplateAutor </input><br>'.replace('templateName', json.title).replace('templateID',json.caseFileiID).replace('TemplateAutor', json.owner.name);
+	/** The radio button listener. */
+	collectionRadioListener: function(event) {
+		// if the radio button was activated.
+		if(event.target.checked)
+			Messaging.sendToBackground("Collection.select", event.target.id);
+	},
+	convertToHTML : function (json, active) {
+		var container = document.createElement("div");
+		container.classList.add("collection-item");
+		var firstLine = document.createElement("div");
+		firstLine.classList.add("firstLine");
 
+		var radio = document.createElement("input");
+		radio.type = "radio";
+		// group all collection radio buttons by name.
+		radio.name = "collection-radio";
+		// pre-select the active collection.
+		if(json.caseFileID === active)
+			radio.checked = true;
+		// this is needed for the label.
+		radio.id = json.caseFileID;
+		// listen for changes.
+		radio.addEventListener("change", Collections.collectionRadioListener);
+		firstLine.appendChild(radio);
+
+		// the label is the extended clickable area of the radio button.
+		var label = document.createElement("label");
+		// reference the radio button.
+		label.setAttribute("for", json.caseFileID);
+
+		// the collection name.
+		var name = document.createElement("span");
+		name.classList.add("name");
+		name.innerText = json.title;
+		label.appendChild(name);
+		firstLine.appendChild(label);
+
+		var secondLine = document.createElement("div");
+
+		var owner = document.createElement("span");
+		owner.classList.add("owner");
+		owner.innerText = json.owner.name;
+		secondLine.appendChild(owner);
+		var time = document.createElement("span");
+		time.classList.add("time");
+		time.innerText = new Date(json.created).toLocaleString();
+		secondLine.appendChild(time);
+
+		// insert the children.
+		container.appendChild(firstLine);
+		container.appendChild(secondLine);
+		return container;
 	},
 	getById : function() {
 		XForceAPI.collectionById(
@@ -38,22 +87,23 @@ var Collections = {
 				alert(JSON.stringify(error));
 			});
 	},
-	outputCollections: function(targetId, collections) {
-		var result = "";
-		for(var i = 0; i < collections.length; i++){
-			result += Collections.convertToHTML(collections[i]);
-		}
-		document.getElementById(targetId).innerHTML = result;
+	outputCollections: function(targetId, collections, active) {
+		var result = document.getElementById(targetId);
+		// clear the result container, for sanity.
+		result.innerHTML = "";
+		// populate the container.
+		for(var i = 0; i < collections.length; i++)
+			result.appendChild(Collections.convertToHTML(collections[i], active));
 	},
-	getPrivate: function() {
+	getPrivate: function(active) {
 		Messaging.sendToBackground("privateCollections.all").then((c) => {
 			if(c !== null)
-				Collections.outputCollections("private", c);
+				Collections.outputCollections("private", c, active);
 			else
 				XForceAPI.privateCollections(
 					function(result) {
 						Messaging.sendToBackground("privateCollections.add", result.casefiles);
-						Collections.outputCollections("private", result.casefiles);
+						Collections.outputCollections("private", result.casefiles, active);
 					},
 					function(error) {
 						alert("[getPrivate] Error Response: " + JSON.stringify(error));
@@ -64,15 +114,15 @@ var Collections = {
 			console.error("[getPrivate] Messaging error", JSON.stringify(error), error);
 		});
 	},
-	getShared: function() {
+	getShared: function(active) {
 		Messaging.sendToBackground("sharedCollections.all").then((c) => {
 			if(c !== null)
-				Collections.outputCollections("shared", c);
+				Collections.outputCollections("shared", c, active);
 			else
 				XForceAPI.sharedCollections(
 					function(result) {
 						Messaging.sendToBackground("sharedCollections.add", result.casefiles);
-						Collections.outputCollections("shared", result.casefiles);
+						Collections.outputCollections("shared", result.casefiles, active);
 					},
 					function(error) {
 						alert("[getShared] Error Response: " + JSON.stringify(error));
@@ -116,16 +166,17 @@ var Collections = {
 };
 
 document.addEventListener("DOMContentLoaded", function() {
-
-	var intervalId = setInterval(() => {
+	Messaging.sendToBackground("Collection.active").then((active) => {
+		var intervalId = setInterval(() => {
 		// wait until the XForceAPI object is properly set up.
 		if(XForceAPI) {
-			Collections.getPrivate();
-			Collections.getShared();
+			Collections.getPrivate(active);
+			Collections.getShared(active);
 
 			clearInterval(intervalId);
 		}
 	}, 10);
-
-	
+	}).catch(() => {
+		alert("Communication error.")
+	});	
 });	

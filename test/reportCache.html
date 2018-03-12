@@ -15,14 +15,14 @@
 			var console = document.getElementById("output");
 			var url = document.getElementById("url").value;
 
-			console.innerText += "\n\nInserting entry for '" + url + "' ('" + urlDomain(url) + "')";
+			console.innerText += "\n\nInserting entry for '" + url + "'";
 
 			if(reportCache.findReport(url))
 				console.innerText += "\nAn entry already exists. Ignoring.";
 			else
 			{
 				console.innerText += "\nNo entry exists yet. Inserting.";
-				reportCache.addReport({url: urlDomain(url)});
+				reportCache.addReport({url: url});
 			}
 		}
 	</script>

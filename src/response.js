@@ -99,8 +99,8 @@ const addReport = ((globalReport) => { return function(report, request) {
 </div>
 </div>`;
 			e.querySelector("button").addEventListener("click", (url => { return function() {
-				Messaging.sendToBackground("Collection.addReport", url).then(()=>{
-					alert("Success");
+				Messaging.sendToBackground("Collection.addReport", url).then((r)=>{
+					alert("Success: " + JSON.stringify(r));
 				}).catch((e)=>{
 					alert("Error: " + JSON.stringify(e));
 				});

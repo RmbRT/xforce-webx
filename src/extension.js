@@ -41,16 +41,3 @@ var handlers = {
 	"url": new Handler("URL report"),
 	"casefiles": new Handler("Collection"),
 };
-
-Messaging.sendToBackground("request-report", document.URL).then(report => {
-	// are automatic checks enabled?
-	if(report !== null) {
-		var threatLevel = report.score;
-		//browser.browserAction.setIcon("/images/square.png");
-		alert(threatLevel);
-
-	} else {
-		// automatic checks are disabled.
-
-	}
-}).catch((error) => console.error("error", JSON.stringify(error)));

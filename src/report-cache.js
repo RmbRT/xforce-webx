@@ -3,16 +3,6 @@ function ReportCache() {
 	this._reports = [];
 }
 
-/** Parses the domain out of a URL.
-	It even resolves relative URLs.
-@param url:
-	The URL string.
-@return
-	The URL's domain. */
-const urlDomain = ((a)=> { return function(url) {
-	a.href = url;
-	return a.hostname;
-};})(document.createElement("a"));
 
 /** The global report cache. */
 var reportCache = new ReportCache();
@@ -24,11 +14,9 @@ var reportCache = new ReportCache();
 @return
 	The report that belongs to `url`, if found, or null. */
 ReportCache.prototype.findReport = function(url) {
-	// only the URL's domain is needed.
-	const domain = urlDomain(url);
 	// try to find a report for the domain.
 	for(var i = 0; i < this._reports.length; i++)
-		if(domain === urlDomain(this._reports[i].url))
+		if(url === this._reports[i].url)
 			return this._reports[i];
 
 	// no report found for `url`.
@@ -41,9 +29,8 @@ ReportCache.prototype.findReport = function(url) {
 @param report:
 	The JSON object returned by the X-Force API url report. */
 ReportCache.prototype.addReport = function(report) {
-	const domain = report.url;
 	for(var i = 0; i < this._reports.length; i++)
-		if(domain === urlDomain(this._reports[i].url))
+		if(url === this._reports[i].url)
 			throw new Error("Report for url '" + report.url + "' existed already.");
 
 	this._reports.push(report);

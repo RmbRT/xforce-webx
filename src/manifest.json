@@ -38,6 +38,12 @@
 		}
 	},
 
+	"web_accessible_resources" : [
+		"images/high-16.png", "images/high-32.png",
+		"images/medium-16.png", "images/medium-32.png",
+		"images/low-16.png", "images/low-32.png"
+	],
+
 	"options_ui": {
 		"page": "options.html"
 	},
@@ -45,6 +51,7 @@
 	"permissions": [
 		"contextMenus",
 		"activeTab",
-		"storage"
+		"storage",
+		"tabs"
 	]
 }

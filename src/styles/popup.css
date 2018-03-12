@@ -45,3 +45,42 @@ div.context > *.interactive:hover, details:not([open]) > summary:hover {
 div.context > * {
 	border-top: #fff solid 1px;
 }
+
+.collection-item {
+	padding: 5px;
+}
+
+.collection-item input[type="radio"] {
+	border:black solid 1px;
+	display:inline-block;
+	margin: 0 5px 0 0;
+	vertical-align: middle;
+}
+.collection-item label {
+	vertical-align: bottom;
+}
+
+.collection-item + .collection-item {
+	border-top: #ddd solid 1px;
+}
+
+.collection-item .name {
+	color: #0074bb;
+	font-weight: bold;
+}
+
+.collection-item .owner {
+	color: #555;
+	float: left;
+	margin-left: 21px;
+	margin-right: 20px;
+}
+
+.collection-item .time {
+	color: #555;
+	float: right;
+}
+.collection-item .time:after {
+	content: "";
+	clear: both;
+}
