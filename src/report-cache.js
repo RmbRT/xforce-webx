@@ -30,7 +30,7 @@ ReportCache.prototype.findReport = function(url) {
 	The JSON object returned by the X-Force API url report. */
 ReportCache.prototype.addReport = function(report) {
 	for(var i = 0; i < this._reports.length; i++)
-		if(url === this._reports[i].url)
+		if(report.url === this._reports[i].url)
 			throw new Error("Report for url '" + report.url + "' existed already.");
 
 	this._reports.push(report);
