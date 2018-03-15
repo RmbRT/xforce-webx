@@ -1,3 +1,6 @@
+Requirement.need("collection-cache.js", [
+	"messaging.js"]);
+
 /** A collection cache class. */
 function CollectionCache() {
 	this._collections = null;
@@ -45,4 +48,27 @@ CollectionCache.prototype.addCollection = function(collection) {
 
 		this._collections.push(collection);
 	}
+};
+
+/** Registers request listeners in the background script. */
+CollectionCache.registerInBackgroundScript = function() {
+	Messaging.listen("privateCollections.add", (c) => {
+		for(var i = 0; i < c.length; i++)
+			if(!privateCollections.findCollection(c[i]))
+				privateCollections.addCollection(c[i]);
+	});
+
+	Messaging.listen("privateCollections.all", () => {
+		return privateCollections.all();
+	});
+
+	Messaging.listen("sharedCollections.add", (c) => {
+		for(var i = 0; i < c.length; i++)
+			if(!sharedCollections.findCollection(c[i]))
+				sharedCollections.addCollection(c[i]);
+	});
+
+	Messaging.listen("sharedCollections.all", () => {
+		return sharedCollections.all();
+	});
 };

@@ -1,3 +1,5 @@
+Requirement.need("messaging.js", []);
+
 const Messaging = {
 	/** Listens for messages over a channel.
 	@param channel:

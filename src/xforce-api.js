@@ -1,3 +1,6 @@
+Requirement.need("xforce-api.js", [
+	"config.js"]);
+
 /** Creates an interface to the XForce API.
 @param user:
 	The user name.

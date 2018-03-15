@@ -1,43 +1,10 @@
-/** API call handler.
-	Default alert handlers are set for debugging. */
-function Handler(
-	name,
-	onResponse,
-	onErrorResponse,
-	onConnectionError)
-{
-	this.name = name;
-	if(onResponse)
-		this.onResponse = onResponse;
-	if(onErrorResponse)
-		this.onErrorResponse = onErrorResponse;
-	if(onConnectionError)
-		this.onConnectionError = onConnectionError;
-}
+Requirement.need("extension.js", [
+	"url-report-command.js"]);
 
-Handler.prototype.onResponse = function(response, request) {
-	addReport(response, request);
-};
-
-Handler.prototype.onErrorResponse = function(error, request) {
-	alert(this.name + " error response for request " + request + ": " + error);
-}
-
-Handler.prototype.onConnectionError = function(error, request) {
-	alert(this.name + " connection error for request " + request + ": " + error);
-}
-
-// listen for results of API calls.
-// The message is passed from background.js
-browser.runtime.onMessage.addListener((message) => {
-	if(!handlers[message.call])
-		alert("invalid message.call '" + message.call + "'");
-
-	handlers[message.call]["on" + message.type](message.content, message.request);
-});
-
-/** The handlers for API calls. */
-var handlers = {
-	"url": new Handler("URL report"),
-	"casefiles": new Handler("Collection"),
-};
+URLReportCommand.registerInContentScript(
+	// add received reports to the visited page.
+	success => addReport(success.content, success.request),
+	// display API errors.
+	errorResponse => alert("Error: " + JSON.stringify(errorResponse)),
+	// display connection errors.
+	connectionError => alert("Connection Error: " + JSON.stringify(connectionError)));

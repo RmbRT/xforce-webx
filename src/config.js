@@ -1,3 +1,6 @@
+Requirement.need("config.js", [
+	"messaging.js"]);
+
 /** The configuration data of the web extension.
 @param name:
 	String: The X-Force login name.
@@ -69,7 +72,7 @@ Config.prototype.toJSON = function() {
 	};
 };
 
-/** The keys used to laod and save the config object. */
+/** The keys used to load and save the config object. */
 Config.fields = ["name", "password", "auto_check", "threat_medium", "threat_high"];
 
 /** The default config values.

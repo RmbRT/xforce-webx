@@ -1,3 +1,4 @@
+Requirement.need("response.js", []);
 const urlDomain = ((a)=> { return function(url) {
 	a.href = url;
 	return a.hostname;
