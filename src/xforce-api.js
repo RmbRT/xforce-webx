@@ -106,7 +106,7 @@ XForce.prototype.collectionById = function(
 		onConnectionError);
 };
 
-Xforce.prototype.fileHash = function(
+XForce.prototype.fileHash = function(
 	filehash,
 	onResponse,
 	onErrorResponse,
