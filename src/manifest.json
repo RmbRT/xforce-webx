@@ -20,6 +20,7 @@
 				"config.js",
 				"response.js",
 				"url-report-command.js",
+				"filehash-handler.js",
 				"extension.js"],
 			"css": ["styles/default.css"]
 		}
@@ -37,8 +38,8 @@
 			"report-cache.js",
 			"url-report-command.js",
 			"auto-check.js",
-			"background.js"
-		]
+			"filehash-handler.js",
+			"background.js"]
 	},
 
 	"browser_action": {

@@ -8,3 +8,5 @@ URLReportCommand.registerInContentScript(
 	errorResponse => alert("Error: " + JSON.stringify(errorResponse)),
 	// display connection errors.
 	connectionError => alert("Connection Error: " + JSON.stringify(connectionError)));
+
+fileHashReport.registerInContentScript();
