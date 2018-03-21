@@ -106,6 +106,20 @@ XForce.prototype.collectionById = function(
 		onConnectionError);
 };
 
+Xforce.prototype.fileHash = function(
+	filehash,
+	onResponse,
+	onErrorResponse,
+	onConnectionError)
+{	
+	this.request(
+		"GET",
+		`malware/${encodeURIComponent(filehash)}`,
+		onResponse,
+		onErrorResponse,
+		onConnectionError);
+};
+
 XForce.prototype.publicCollections = function(
 	onResponse,
 	onErrorResponse,
