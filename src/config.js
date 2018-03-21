@@ -19,7 +19,8 @@ function Config(
 	password,
 	auto_check,
 	threat_medium,
-	threat_high) {
+	threat_high,
+	remember_reports) {
 	// check and set name.
 	if(typeof(name) !== "string")
 		throw new TypeError("name must be a string.");
@@ -49,6 +50,11 @@ function Config(
 		throw new TypeError("threat_high must be a number");
 	else
 		this._threat_high = threat_high;
+
+	if(typeof(remember_reports) !== "boolean")
+		throw new TypeError("remember_reports must be a boolean.");
+	else
+		this._remember_reports = remember_reports;
 }
 
 /** Creates a config object from a json object. */
@@ -58,7 +64,8 @@ Config.fromJSON = function(json) {
 		json.password,
 		json.auto_check,
 		json.threat_medium,
-		json.threat_high);
+		json.threat_high,
+		json.remember_reports);
 };
 
 /** Converts a config object into a json object. */
@@ -68,12 +75,13 @@ Config.prototype.toJSON = function() {
 		"password": this._password,
 		"auto_check": this._auto_check,
 		"threat_medium": this._threat_medium,
-		"threat_high": this._threat_high
+		"threat_high": this._threat_high,
+		"remember_reports": this._remember_reports,
 	};
 };
 
 /** The keys used to load and save the config object. */
-Config.fields = ["name", "password", "auto_check", "threat_medium", "threat_high"];
+Config.fields = ["name", "password", "auto_check", "threat_medium", "threat_high", "remember_reports"];
 
 /** The default config values.
 	This is used to create initial config values. */
@@ -82,7 +90,8 @@ Config.defaultJSON = {
 	"password": "",
 	"auto_check": false,
 	"threat_medium": 4,
-	"threat_high": 7
+	"threat_high": 7,
+	"remember_reports": false
 };
 
 /** Default config object. */
@@ -166,6 +175,9 @@ Config.prototype.threatMedium = function() { return this._threat_medium; };
 
 /** Returns the minimum threat level to treat as high threat. */
 Config.prototype.threatHigh = function() { return this._threat_high; };
+
+/** Returns whether reports are remembered. */
+Config.prototype.rememberReports = function() { return this._remember_reports; };
 
 /** Classifies a threat level.
 	The classification depends on the `threatMedium` and `threatHigh` properties.

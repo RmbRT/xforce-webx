@@ -9,4 +9,4 @@ URLReportCommand.registerInContentScript(
 	// display connection errors.
 	connectionError => alert("Connection Error: " + JSON.stringify(connectionError)));
 
-fileHashReport.registerInContentScript();
+FileHashReport.registerInContentScript();

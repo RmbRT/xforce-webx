@@ -12,6 +12,8 @@ AutoCheck.registerInBackgroundScript();
 ActiveCollection.registerInBackgroundScript();
 // Register the collection cache listeners.
 CollectionCache.registerInBackgroundScript();
+// Register the file hash report context button.
+FileHashReport.registerInBackgroundScript();
 
 var config = null;
 Config.load((c) => {

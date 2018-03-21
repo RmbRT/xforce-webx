@@ -38,6 +38,7 @@ function loadSettings() {
 			triggerChange("threat-medium");
 			document.getElementById("threat-high").value = c.threatHigh().toString();
 			triggerChange("threat-high");
+			document.getElementById("remember-reports").checked = !!c.rememberReports();
 		} catch(e) {
 			displayError("Internal: " + e);
 		}
@@ -141,7 +142,8 @@ document.addEventListener("DOMContentLoaded", ((allValid) => { return function()
 			"password": document.getElementById("password").value,
 			"auto_check": document.getElementById("auto-check").checked,
 			"threat_medium": Number.parseInt(document.getElementById("threat-medium").value),
-			"threat_high": Number.parseInt(document.getElementById("threat-high").value)
+			"threat_high": Number.parseInt(document.getElementById("threat-high").value),
+			"remember_reports": document.getElementById("remember-reports").checked
 		};
 
 		// validate the input.

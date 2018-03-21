@@ -115,6 +115,7 @@ XForce.prototype.fileHash = function(
 	this.request(
 		"GET",
 		`malware/${encodeURIComponent(filehash)}`,
+		null,
 		onResponse,
 		onErrorResponse,
 		onConnectionError);

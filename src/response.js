@@ -87,7 +87,20 @@ const addReport = ((globalReport) => { return function(report, request) {
 				globalReport = null;
 			});
 
+			// display URL report.
+			var rect = links[i].getBoundingClientRect();
+			e.style.top = window.scrollY + (rect.bottom + 5) + "px";
+			e.style.left = window.scrollX + (rect.left) + "px";
+
+			if(globalReport)
+				document.body.removeChild(globalReport);
+			document.body.appendChild(e);
+			globalReport = e;
+
+			// add listener for displaying the report.
 			links[i].addEventListener("mouseenter", ((curry) => { return function() {
+				if(!config.rememberReports())
+					return;
 				var rect = this.getBoundingClientRect();
 				curry.style.top = window.scrollY + (rect.bottom + 5) + "px";
 				curry.style.left = window.scrollX + (rect.left) + "px";

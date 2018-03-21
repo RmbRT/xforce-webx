@@ -22,7 +22,7 @@
 				"url-report-command.js",
 				"filehash-handler.js",
 				"extension.js"],
-			"css": ["styles/default.css"]
+			"css": ["styles/default.css", "styles/filehash.css"]
 		}
 	],
 
