@@ -5,6 +5,12 @@ var Collections = {
 		if(event.target.checked)
 			Messaging.sendToBackground("Collection.select", event.target.id);
 	},
+	/** converts a Collection Object into HTML
+		@param json
+			the Collection Object
+		@param active
+			Id of the currently selected Collection */
+
 	convertToHTML : function (json, active) {
 		var container = document.createElement("div");
 		container.classList.add("collection-item");
@@ -52,41 +58,8 @@ var Collections = {
 		container.appendChild(secondLine);
 		return container;
 	},
-	getById : function() {
-		XForceAPI.collectionById(
-			document.getElementById("search").value,
-			function(result) {
-				alert(JSON.stringify(result));
-			},
-			function(error) {
-				alert(JSON.stringify(error));
-			}, function(error) {
-				alert(JSON.stringify(error));
-			});
-	},
-	getByGroupId: function() {
-		XForceAPI.collectionsByGroupId(
-			document.getElementById("search").value,
-			function(result) {
-				alert(JSON.stringify(result));
-			},
-			function(error) {
-				alert(JSON.stringify(error));
-			}, function(error) {
-				alert(JSON.stringify(error));
-			});
-	},
-	"getPublic": function() {
-		XForceAPI.publicCollections(
-			function(result) {
-				alert(JSON.stringify(result));
-			},
-			function(error) {
-				alert(JSON.stringify(error));
-			}, function(error) {
-				alert(JSON.stringify(error));
-			});
-	},
+
+	 
 	outputCollections: function(targetId, collections, active) {
 		var result = document.getElementById(targetId);
 		// clear the result container, for sanity.
@@ -95,6 +68,9 @@ var Collections = {
 		for(var i = 0; i < collections.length; i++)
 			result.appendChild(Collections.convertToHTML(collections[i], active));
 	},
+	/** method that invokes an XForce API Call to retrieve all private Collections.
+		@param active
+			the active Collection */
 	getPrivate: function(active) {
 		Messaging.sendToBackground("privateCollections.all").then((c) => {
 			if(c !== null)
@@ -114,6 +90,9 @@ var Collections = {
 			console.error("[getPrivate] Messaging error", JSON.stringify(error), error);
 		});
 	},
+	/** method that invokes an XForce API Call to retrieve all shared Collections.
+		@param active
+			the active Collection */
 	getShared: function(active) {
 		Messaging.sendToBackground("sharedCollections.all").then((c) => {
 			if(c !== null)
@@ -160,11 +139,10 @@ var Collections = {
 			});
 
 	},
-	gatherCollections: function() {
-
-	}
+	
 };
 
+/
 document.addEventListener("DOMContentLoaded", function() {
 	Messaging.sendToBackground("Collection.active").then((active) => {
 		var intervalId = setInterval(() => {
