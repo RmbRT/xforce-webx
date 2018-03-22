@@ -66,4 +66,4 @@ ReportCache.prototype.queryReport = function(
 			onErrorMessage,
 			onConnectionError);
 	}
-}
+};

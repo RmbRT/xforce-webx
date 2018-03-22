@@ -1,7 +1,8 @@
 if(Requirement.scope === "background")
 	Requirement.need("filehash-handler.js", [
 		"context-menu.js",
-		"messaging.js"]);
+		"messaging.js",
+		"filehashreport-cache.js"]);
 else
 	Requirement.need("filehash-handler.js", [
 		"messaging.js",
@@ -17,16 +18,23 @@ var FileHashReport = {
 			FileHashReport.contextListener);
 		Messaging.listen("Context.FileHashReport.Query", (hash) => {
 			return new Promise((resolve, reject) => {
-				XForceAPI.fileHash(hash,
+				XForceAPI.fileHash(
+					hash,
 					success => resolve(success),
-					errorResponse => reject(errorResponse),
-					connectionError => reject(connectionError));
+					errorResponse => reject({
+						type: "ErrorResponse",
+						response: errorResponse
+					}),
+					connectionError => reject({
+						type: "ConnectionError",
+						response: connectionError
+					}));
 			});
 		});
 	},
 
 	contextListener: function(info, tab){
-		Messaging.sendToContent(tab.id,"Context.FileHashReport.Click");
+		Messaging.sendToContent(tab.id, "Context.FileHashReport.Click");
 	},
 
 	registerInContentScript: function(){
@@ -39,6 +47,7 @@ var FileHashReport = {
 		var container = document.createElement('div');
 		container.classList.add("xforce-hash-input");
 		var header = document.createElement("p");
+		header.classList.add("header");
 		header.innerText = "Filehash form";
 		var input = document.createElement('input');
 		input.type = "text";
@@ -50,6 +59,9 @@ var FileHashReport = {
 		container.appendChild(input);
 		container.appendChild(button);
 		document.body.appendChild(container);
+
+		// focus on the input.
+		input.focus();
 
 		container.addEventListener("mouseleave", () => {
 			document.body.removeChild(container);

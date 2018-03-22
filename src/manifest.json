@@ -38,6 +38,7 @@
 			"report-cache.js",
 			"url-report-command.js",
 			"auto-check.js",
+			"filehashreport-cache.js",
 			"filehash-handler.js",
 			"background.js"]
 	},
