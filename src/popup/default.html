@@ -2,27 +2,34 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<link href="../styles/popup.css" rel="stylesheet" type="text/css" />
+		<link href="../dependencies/materialize/css/materialize.min.css" rel="stylesheet" type="text/css" />
 		<script src="../requirement-content.js"></script>
 		<script src="../messaging.js"></script>
 		<script src="../config.js"></script>
 		<script src="../xforce-api.js"></script>
 		<script src="collections.js"></script>
+		<script src="../dependencies/materialize/js/materialize/materialize.min.js"></script>
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	</head>
 	<body>
-		<details>
-		<summary>Shared Collections</summary>
+		<ul class="collapsible" data="accordion">
+			<li>
+		<div class="collapsible-header"><i class="material-icons">library_books</i>Shared Collections</div>
 		<div id="shared">
 			<!-- inserted by script. -->
 		</div>
-		</details>
-		<details>
-		<summary>Private Collections</summary>
-		<div id="private">
+	</li>
+	</ul>
+		<li>
+	<ul class="collapsible" data="accordion">
+			<li>
+		<div class="collapsible-header"><i class="material-icons">library_books</i>Private Collections</div>
+		<div class="collapsible-body" id="private">
 			<!-- inserted by script. -->
 		</div>
-		</details>
-		<details>
+	</li>
+</ul>
+				<details>
 			<summary>About</summary>
 			<div class="context">
 				<a class="interactive" href="https://github.com/RmbRT/xforce-webx">
