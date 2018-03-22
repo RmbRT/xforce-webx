@@ -1,41 +1,57 @@
 body {
-	background-color: #ddd;
+	background-color: white;
 	max-width: 800px;
-	min-width: 200px;
+	min-width: 400px;
+	height: auto;
 }
 
-div.context > * {
+div.accordion {
 	display: block;
 	width: 100%;
-	list-style: none;
-	background-color: #eee;
+	background-color: white;
 	color: black;
-	font-family: "Sans Serif";
+	font-family: "Helvetica Neue", "Helvetica", "Arial", "Sans Serif", sans-serif;
+}
+
+div.accordion > .entry {
+	display: block;
+}
+
+div.accordion > .entry > input[type="radio"] + label {
+	display: block;
+	background-color: #0074bb;
+	padding: 10px;
+	color: white;
+}
+
+div.accordion > .entry > input[type="radio"] {
+	display: none;
+}
+
+div.accordion > .entry + .entry {
+	margin-top: 1px;
+}
+
+div.accordion > .entry > input[type="radio"]:not(:checked) ~ .content {
+	display: none;
+}
+
+div.accordion > .entry > input[type="radio"] + label:hover {
+	background-color: #0060aa;
+}
+
+div.accordion > .entry > input[type="radio"]:checked ~ .content {
+	box-shadow: inset 0px 3px 3px -3px #000;
+	display: block;
+}
+
+div.context > a.interactive {
 	text-decoration: none;
-	border-bottom: #ddd solid 1px;
-	padding: 4px;
+	color: black;
 }
 
-details {
-	border: #ddd solid 1px;
-}
-
-div.context > details:not([open]) {
-	padding: 0px;
-}
-
-div.context > *:nth-last-child(1) {
-	border-bottom:none;
-}
-details > summary {
-	padding: 4px;
-}
-div.context > details {
-	padding: 0px;
-}
-
-details[open] > summary {
-	border-bottom: #ddd solid 1px;
+div.context > *:not(.interactive) {
+	color: #555;
 }
 
 div.context > *.interactive:hover, details:not([open]) > summary:hover {
@@ -43,11 +59,18 @@ div.context > *.interactive:hover, details:not([open]) > summary:hover {
 }
 
 div.context > * {
-	border-top: #fff solid 1px;
+	display: block;
+	padding: 5px 10px;
+}
+
+div.context > * + * {
+	border-top: #ddd solid 1px;
 }
 
 .collection-item {
 	padding: 5px;
+	display: block;
+	height: 50px;
 }
 
 .collection-item input[type="radio"] {
