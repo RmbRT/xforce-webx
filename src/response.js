@@ -42,7 +42,7 @@ const addReport = ((globalReport) => { return function(report, request) {
 				</div>
 				<span class="SPAN_8">X-Force URL Report</span>
 				<div class="DIV_9">
-					<span class="SPAN_10">${hostname}</span>
+					<span class="SPAN_10">${request}</span>
 				</div>
 			</h2>
 		</div>
@@ -57,10 +57,6 @@ const addReport = ((globalReport) => { return function(report, request) {
 						<td class="TD_51">
 							<ul class="UL_52">${catString}</ul>
 						</td>
-					</tr>
-					<tr class="TR_49">
-						<th class="TH_50">Full URL</th>
-						<td class="TD_51">${request}</td>
 					</tr>
 				</tbody>
 			</table>
