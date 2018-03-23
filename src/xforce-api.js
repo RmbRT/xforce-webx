@@ -71,6 +71,7 @@ XForce.prototype.request = function(
 	};
 
 	https.onerror = https.onabort = https.ontimeout = onConnectionError;
+	https.setRequestHeader("Accept", "application/json");
 	https.setRequestHeader("Authorization", "Basic " + this._login);
 	https.send(body);
 };
