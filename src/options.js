@@ -1,11 +1,28 @@
+var displayTimeout = null;
+const toastLength = 10000;
+
 function displayError(message) {
 	document.getElementById("error").innerText += "Error: " + message + "\n";
 	document.getElementById("success").innerText = "";
+
+	// set a timeout after which the message should disapper.
+	if(displayTimeout) {
+		clearTimeout(displayTimeout);
+		clearMessage();
+	}
+	displayTimeout = setTimeout(clearMessage, toastLength);
 }
 
 function displaySuccess(message) {
 	document.getElementById("success").innerText += "Success: " + message + "\n";
 	document.getElementById("error").innerText = "";
+
+	// set a timeout after which the message should disapper.
+	if(displayTimeout) {
+		clearTimeout(displayTimeout);
+		clearMessage();
+	}
+	displayTimeout = setTimeout(clearMessage, toastLength);
 }
 
 function clearMessage() {
@@ -13,21 +30,23 @@ function clearMessage() {
 	document.getElementById("success").innerText = "";
 }
 
+/** Triggers the 'change' event on the element with the requested id.
+@param id:
+	The id of the element to trigger the 'change' event on. */
 function triggerChange(id) {
 	id = document.getElementById(id);
 	if("createEvent" in document) {
 		const change = document.createEvent("HTMLEvents");
 		change.initEvent("change", false, true);
 		id.dispatchEvent(change);
-	} else
-	{
+	} else {
 		id.fireEvent("onchange");
 	}
 }
 
 /** Loads the settings and writes them into the form. */
 function loadSettings() {
-	Config.load((c) => {
+	Config.get((c) => {
 		try {
 			document.getElementById("name").value = c.name().toString();
 			triggerChange("name");
@@ -39,6 +58,7 @@ function loadSettings() {
 			document.getElementById("threat-high").value = c.threatHigh().toString();
 			triggerChange("threat-high");
 			document.getElementById("remember-reports").checked = !!c.rememberReports();
+			document.getElementById("parse-links").checked = !!c.parseLinks();
 		} catch(e) {
 			displayError("Internal: " + e);
 		}
@@ -129,8 +149,6 @@ document.addEventListener("DOMContentLoaded", ((allValid) => { return function()
 	// fill the previous settings into the form.
 	loadSettings();
 
-
-
 	// on clicking the save button, save the form.
 	document.getElementById("save").addEventListener("click", () => {
 		// clear the status message.
@@ -143,7 +161,8 @@ document.addEventListener("DOMContentLoaded", ((allValid) => { return function()
 			"auto_check": document.getElementById("auto-check").checked,
 			"threat_medium": Number.parseInt(document.getElementById("threat-medium").value),
 			"threat_high": Number.parseInt(document.getElementById("threat-high").value),
-			"remember_reports": document.getElementById("remember-reports").checked
+			"remember_reports": document.getElementById("remember-reports").checked,
+			"parse_links": document.getElementById("parse-links").checked
 		};
 
 		// validate the input.

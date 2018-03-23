@@ -16,8 +16,8 @@
 			"js": [
 				"requirement-content.js",
 				"messaging.js",
-				"htmlParser.js",
 				"config.js",
+				"htmlParser.js",
 				"response.js",
 				"url-report-command.js",
 				"filehash-handler.js",

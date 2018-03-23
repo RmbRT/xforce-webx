@@ -32,7 +32,7 @@
 	<!-- The settings form. -->
 	<form id="form">
 		<div class="field">
-			<label for="name">Username <input type="text" id="name" /></label>
+			<label for="name">API key <input type="text" id="name" /></label>
 			<span class="invalid-msg" id="invalid-name">
 				The username is required.
 			</span>
@@ -41,7 +41,7 @@
 			</p>
 		</div>
 		<div class="field">
-			<label for="password">Password <input type="password" id="password" /></label>
+			<label for="password">API password <input type="password" id="password" /></label>
 			<span class="invalid-msg" id="invalid-password">
 				The password is required.
 			</span>
@@ -82,6 +82,14 @@
 			<p class="hint">
 				When activated, URL reports don't have to be requested again, but are displayed again when hovering over the corresponding link.
 			</p>
+		</div>
+		<div class="field">
+			<input type="checkbox" id="parse-links" />
+			<label for="parse-links">Parse plaintext links.</label>
+			<p class="hint">
+				When activated, plaintext links are parsed and converted into clickable links when the page is loaded.
+			</p>
+		</div>
 		<div>
 			<input type="button" value="Save changes" id="save" />
 			<input type="button" value="Reset changes" id="reset" />

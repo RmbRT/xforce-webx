@@ -12,6 +12,10 @@ Requirement.need("config.js", [
 	Number: The minimum threat level to treat as medium threat.
 @param threat_high:
 	Number: The minimum threat level to treat as high threat.
+@param remember_reports:
+	Boolean: Whether to remember URL reports, so that they reappear when hovering their link.
+@param parse_links:
+	Boolean: Whether to parse the site for plaintext links and convert them to clickable links.
 @throws TypeError
 	If any of the arguments is not of the required type. */
 function Config(
@@ -20,7 +24,8 @@ function Config(
 	auto_check,
 	threat_medium,
 	threat_high,
-	remember_reports) {
+	remember_reports,
+	parse_links) {
 	// check and set name.
 	if(typeof(name) !== "string")
 		throw new TypeError("name must be a string.");
@@ -55,6 +60,11 @@ function Config(
 		throw new TypeError("remember_reports must be a boolean.");
 	else
 		this._remember_reports = remember_reports;
+
+	if(typeof(parse_links) !== "boolean")
+		throw new TypeError("parse_links must be a boolean.");
+	else
+		this._parse_links = parse_links;
 }
 
 /** Creates a config object from a json object. */
@@ -65,7 +75,8 @@ Config.fromJSON = function(json) {
 		json.auto_check,
 		json.threat_medium,
 		json.threat_high,
-		json.remember_reports);
+		json.remember_reports,
+		json.parse_links);
 };
 
 /** Converts a config object into a json object. */
@@ -77,11 +88,12 @@ Config.prototype.toJSON = function() {
 		"threat_medium": this._threat_medium,
 		"threat_high": this._threat_high,
 		"remember_reports": this._remember_reports,
+		"parse_links": this._parse_links
 	};
 };
 
 /** The keys used to load and save the config object. */
-Config.fields = ["name", "password", "auto_check", "threat_medium", "threat_high", "remember_reports"];
+Config.fields = ["name", "password", "auto_check", "threat_medium", "threat_high", "remember_reports", "parse_links"];
 
 /** The default config values.
 	This is used to create initial config values. */
@@ -91,7 +103,8 @@ Config.defaultJSON = {
 	"auto_check": false,
 	"threat_medium": 4,
 	"threat_high": 7,
-	"remember_reports": false
+	"remember_reports": false,
+	"parse_links": true
 };
 
 /** Default config object. */
@@ -179,6 +192,8 @@ Config.prototype.threatHigh = function() { return this._threat_high; };
 /** Returns whether reports are remembered. */
 Config.prototype.rememberReports = function() { return this._remember_reports; };
 
+Config.prototype.parseLinks = function() { return this._parse_links; };
+
 /** Classifies a threat level.
 	The classification depends on the `threatMedium` and `threatHigh` properties.
 @return
@@ -190,4 +205,23 @@ Config.prototype.threatLevel = function(level) {
 		return "medium";
 	else
 		return "low";
+};
+
+// load the global config.
+Config._global = new Promise((resolve, reject) => {
+	Config.load(resolve, reject);
+});
+// update the global config automatically.
+Config.listenForUpdates((c) => { Config._global.resolve(c); });
+
+/** Retrieves the config object.
+@param then:
+	A callback receiving the config object.
+@param fail:
+	Optional: Callback that is called when the loading failed. */
+Config.get = function(then, fail) {
+	if(arguments.length === 1)
+		Config._global.then(c => { then(c); });
+	else
+		Config._global.then(c => { then(c); }, fail);
 };

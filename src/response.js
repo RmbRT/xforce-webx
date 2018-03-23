@@ -4,13 +4,6 @@ const urlDomain = ((a)=> { return function(url) {
 	return a.hostname;
 };})(document.createElement("a"));
 
-
-var config;
-Config.load(
-	c => { config = c; },
-	() => alert("Failed to load config."));
-Config.listenForUpdates(c => { config = c; });
-
 /** Adds a report to all links to a url.
 @param url:
 	The url the report belongs to.
@@ -22,18 +15,20 @@ const addReport = ((globalReport) => { return function(report, request) {
 	var links = document.getElementsByTagName("a");
 	const hostname = urlDomain(request);
 
-	for(var i = 0; i < links.length; i++)
-		if(links[i].hasAttribute("href") &&links[i].href === request)
-		//&& links[i].hostname == hostname)
-		{
-			// create the report html element.
-			var e = document.createElement("span");
+	Config.get(config => {
 
-			var catString = "";
-			for(var cat in report.cats)
-				catString += `<li class="LI_53">${cat}</li>`;
+		for(var i = 0; i < links.length; i++)
+			if(links[i].hasAttribute("href") &&links[i].href === request)
+			//&& links[i].hostname == hostname)
+			{
+				// create the report html element.
+				var e = document.createElement("span");
 
-			e.innerHTML =
+				var catString = "";
+				for(var cat in report.cats)
+					catString += `<li class="LI_53">${cat}</li>`;
+
+				e.innerHTML =
 `<div class="root">
 	<div class="risk-box ${config.threatLevel(report.score)}-risk">
 		<div class="DIV_3">Risk</div>
@@ -72,44 +67,45 @@ const addReport = ((globalReport) => { return function(report, request) {
 		</div>
 	</div>
 </div>`;
-			e.querySelector("button").addEventListener("click", (url => { return function() {
-				Messaging.sendToBackground("Collection.addReport", url).then((r)=>{
-					alert("Success: " + JSON.stringify(r));
-				}).catch((e)=>{
-					alert("Error: " + JSON.stringify(e));
+				e.querySelector("button").addEventListener("click", (url => { return function() {
+					Messaging.sendToBackground("Collection.addReport", url).then((r)=>{
+						alert("Success: " + JSON.stringify(r));
+					}).catch((e)=>{
+						alert("Error: " + JSON.stringify(e));
+					});
+				}; })(request));
+
+				e.classList.add("xforce-api-report");
+
+				e.addEventListener("mouseleave", function() {
+					document.body.removeChild(this);
+					globalReport = null;
 				});
-			}; })(request));
 
-			e.classList.add("xforce-api-report");
-
-			e.addEventListener("mouseleave", function() {
-				document.body.removeChild(this);
-				globalReport = null;
-			});
-
-			// display URL report.
-			var rect = links[i].getBoundingClientRect();
-			e.style.top = window.scrollY + (rect.bottom + 5) + "px";
-			e.style.left = window.scrollX + (rect.left) + "px";
-
-			if(globalReport)
-				document.body.removeChild(globalReport);
-			document.body.appendChild(e);
-			globalReport = e;
-
-			// add listener for displaying the report.
-			links[i].addEventListener("mouseenter", ((curry) => { return function() {
-				if(!config.rememberReports())
-					return;
-				var rect = this.getBoundingClientRect();
-				curry.style.top = window.scrollY + (rect.bottom + 5) + "px";
-				curry.style.left = window.scrollX + (rect.left) + "px";
+				// display URL report.
+				var rect = links[i].getBoundingClientRect();
+				e.style.top = window.scrollY + (rect.bottom + 5) + "px";
+				e.style.left = window.scrollX + (rect.left) + "px";
 
 				if(globalReport)
 					document.body.removeChild(globalReport);
+				document.body.appendChild(e);
+				globalReport = e;
 
-				document.body.appendChild(curry);
-				globalReport = curry;
-			};})(e));
-		}
+				// add listener for displaying the report.
+				links[i].addEventListener("mouseenter", ((curry) => { return function() {
+					if(!config.rememberReports())
+						return;
+					var rect = this.getBoundingClientRect();
+					curry.style.top = window.scrollY + (rect.bottom + 5) + "px";
+					curry.style.left = window.scrollX + (rect.left) + "px";
+
+					if(globalReport)
+						document.body.removeChild(globalReport);
+
+					document.body.appendChild(curry);
+					globalReport = curry;
+				};})(e));
+			}
+	});
 };})(null);

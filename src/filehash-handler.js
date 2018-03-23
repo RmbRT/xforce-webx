@@ -44,6 +44,22 @@ var FileHashReport = {
 	},
 
 	createInputMask: function(){
+		/** Returns the selected text. */
+		function getSelectionText() {
+			var text = "";
+			var activeEl = document.activeElement;
+			var activeElTagName = activeEl ? activeEl.tagName.toLowerCase() : null;
+			if((activeElTagName === "textarea")
+			|| (activeElTagName === "input"
+				&& /^(?:text|search|password|tel|url)$/i.test(activeEl.type))
+				&& (typeof activeEl.selectionStart === "number")) {
+				text = activeEl.value.slice(activeEl.selectionStart, activeEl.selectionEnd);
+			} else if(window.getSelection) {
+				text = window.getSelection().toString();
+			}
+			return text;
+		}
+
 		var container = document.createElement('div');
 		container.classList.add("xforce-hash-input");
 		var header = document.createElement("p");
@@ -59,7 +75,8 @@ var FileHashReport = {
 		container.appendChild(input);
 		container.appendChild(button);
 		document.body.appendChild(container);
-
+		// if text was selected, put it into the input.
+		input.value = getSelectionText();
 		// focus on the input.
 		input.focus();
 
@@ -69,8 +86,183 @@ var FileHashReport = {
 
 		button.addEventListener("click", () => {
 			Messaging.sendToBackground("Context.FileHashReport.Query", input.value).then((report) => {
-				alert("Success: " + JSON.stringify(report));
+				displayReport(report);
 			}).catch((error) => alert("Error: " + JSON.stringify(error)));
+		});
+	},
+
+	displayReport: function(report) {
+		Config.get(config => {
+			var e = document.createElement("span");
+			e.classList.add("xforce-api-report");
+
+			function getRow(name, value) {
+				if(!value)
+					return "";
+				else
+					return `
+						<tr class="TR_49">
+							<th class="TH_50">${name}</th>
+							<td class="TD_51">${value}</td>
+						</tr>`;
+			}
+
+			function getListItem(value) {
+				if(!value)
+					return "";
+				else
+					return `<li class="LI_53">${value}</li>`;
+			}
+
+			function getStringList(values) {
+				if(!values
+				|| !values.length)
+					return "";
+
+				var string = `<ul class="UL_52">`;
+				for(var i = 0; i < values.length; i++)
+					string += getListItem(values[i]);
+				return string += `</ul>`;
+			}
+
+			function getOrigins(report) {
+				if(!report.malware.origins)
+					return "";
+
+
+				function getMalwareServers(malservers) {
+					if(!malservers
+					|| !malservers.rows
+					|| !malservers.rows.length === 0)
+						return "";
+
+					malservers = malservers.rows;
+
+					var servers = "";
+
+					for(var i = 0; i < malservers.length; i++) {
+						servers +=
+`<div>
+	<table class="TABLE_40">
+		<caption class="CAPTION_41">
+		</caption>
+		<tbody class="TBODY_44">
+			${getRow("Count", malservers[i].count)}
+			${getRow("Domain", malservers[i].domain)}
+			${getRow("Filepath", malservers[i].filepath)}
+			${getRow("First seen", malservers[i].firstseen)}
+			${getRow("Host", malservers[i].host)}
+			${getRow("IP", malservers[i].ip)}
+			${getRow("Last seen", malservers[i].lastseen)}
+			${getRow("md5", malservers[i].md5)}
+			${getRow("Origin", malservers[i].origin)}
+			${getRow("Schema", malservers[i].schema)}
+			${getRow("Type", malservers[i].type)}
+			${getRow("URI", malservers[i].uri)}
+		</tbody>
+	</table>
+</div>`;
+					}
+				}
+
+				function getExternal(external) {
+					return
+`<table class="TABLE_40">
+	<caption class="CAPTION_41">
+	</caption>
+	<tbody class="TBODY_44">
+		${getRow("Detection coverage", ""+external.detectionCoverage)}
+		${getRow("Family", getStringList(external.family))}
+	</tbody>
+</table>`;
+				}
+
+				var origins = report.malware.origins;
+
+				var table =
+`<table class="TABLE_40">
+	<caption class="CAPTION_41">
+	</caption>
+	<tbody class="TBODY_44">
+		${getRow("CnC-Servers", getMalwareServers(origins.CnCServers))}
+		${getRow("Download servers", getMalwareServers(origins.downloadServers))}
+		${getRow("Emails", getMalwareServers(origins.emails))}
+		${getRow("External", getExternal(origins.external))}
+	</tbody>
+</table>`;
+				return table;
+			}
+
+			e.innerHTML =
+`<div class="root">
+	<div class="risk-box ${config.threatLevel(report.malware.risk)}-risk">
+		<div class="DIV_3">Risk</div>
+		<div class="DIV_4">${report.score}</div>
+	</div>
+	<div class="DIV_5">
+		<div class="DIV_6">
+			<h2 class="H2_7">
+				<span class="SPAN_8">X-Force Malware Report</span>
+				<div class="DIV_9">
+					<span class="SPAN_10">${report.malware.md5}</span>
+				</div>
+			</h2>
+		</div>
+		<div class="DIV_38">
+			<h3 class="H3_39">Details</h3>
+			<table class="TABLE_40">
+				<caption class="CAPTION_41">
+				</caption>
+				<tbody class="TBODY_44">
+				${getRow("Created", report.malware.created)}
+				${getRow("Type", report.malware.type)}
+				${getRow("Family", getStringList(report.malware.family))}
+				${getRow("md5", report.malware.md5)}
+				${getRow("Mimetype", report.malware.mimetype)}
+					<tr class="TR_49">
+						<th class="TH_50">Type</th>
+						<td class="TD_51">${report.malware.type}</td>
+					</tr>
+					<tr class="TR_49">
+						<th class="TH_50">md5</th>
+						<td class="TD_51">${report.malware.md5}</td>
+					</tr>
+					<tr class="TR_49">
+						<th class="TH_50">Categorization</th>
+						<td class="TD_51">
+							<ul class="UL_52">${catString}</ul>
+						</td>
+					</tr>
+					<tr class="TR_49">
+						<th class="TH_50">Full URL</th>
+						<td class="TD_51">${request}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>`;
+
+			e.style = `
+				position: fixed;
+				top: 20%;
+				bottom: 20%;
+				left: 20%;
+				right: 20%;
+				overflow: scroll;
+
+				background: white;
+				border: #888 solid 1px;
+				box-shadow: 0px 3px 3px rgba(0,0,0,0.5);
+
+				z-index: 99999;
+
+				font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+				font-size: 12px;
+				color: black;`;
+
+			document.body.appendChild(e);
+			e.addEventListener("mouseleave", document.body.removeChild(e));
 		});
 	}
 };

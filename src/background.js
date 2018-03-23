@@ -14,10 +14,3 @@ ActiveCollection.registerInBackgroundScript();
 CollectionCache.registerInBackgroundScript();
 // Register the file hash report context button.
 FileHashReport.registerInBackgroundScript();
-
-var config = null;
-Config.load((c) => {
-	config = c;
-}, e => console.error("Could not load config", e));
-
-Config.listenForUpdates((c) => { config = c; } );
