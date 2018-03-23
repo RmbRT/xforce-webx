@@ -17,7 +17,7 @@ var fileHashReportCache = new FileHashReportCache();
 FileHashReportCache.prototype.findReport = function(hash) {
 	// try to find a report for `hash`.
 	for(var i = 0; i < this._reports.length; i++)
-		if(hash === this._reports[i].malware.origins.hash)
+		if(hash === this._reports[i].malware.md5)
 			return this._reports[i];
 
 	// no report found for `hash`.
@@ -30,10 +30,10 @@ FileHashReportCache.prototype.findReport = function(hash) {
 @throws Error
 	If the report already existed in the cache. */
 FileHashReportCache.prototype.addReport = function(report) {
-	let id = report.malware.origins.hash;
+	let id = report.malware.md5;
 
 	for(var i = 0; i < this._reports.length; i++)
-		if(this._reports[i].malware.origins.hash === id)
+		if(this._reports[i].malware.md5 === id)
 			throw new Error("Report for hash " + id + " existed already.");
 
 	this._reports.push(report);
