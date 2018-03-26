@@ -20,15 +20,15 @@ var FileHashReport = {
 			return new Promise((resolve, reject) => {
 				XForceAPI.fileHash(
 					hash,
-					success => resolve(success),
-					errorResponse => reject({
+					success => { resolve(success); },
+					errorResponse => { reject({
 						type: "ErrorResponse",
 						response: errorResponse
-					}),
-					connectionError => reject({
+					}); },
+					connectionError => { reject({
 						type: "ConnectionError",
 						response: connectionError
-					}));
+					}); });
 			});
 		});
 	},
