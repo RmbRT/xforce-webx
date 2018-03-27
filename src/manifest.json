@@ -3,7 +3,7 @@
 	"name": "IBM XForce",
 	"version": "1.0",
 
-	"description": "IBM XForce API WebExtension",
+	"description": "IBM X-Force Exchange API WebExtension",
 
 	"icons": {
 		"48": "images/logo-48.png",

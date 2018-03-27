@@ -7,7 +7,8 @@ var regexv6 = /\b(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1
 var regexHost = /\b([A-Za-z0-9-]+[.])+(de|com|net|to|org|edu|gov|fr|es|uk|eu|cn|au|in|jp|at|nl|ru|pl|br)\b/gi
 var ForbiddenTags = {
 	"SCRIPT": "",
-	"A": ""
+	"A": "",
+	"CODE":""
 };
 
 /** Parses the plaintext links from the document and replaces them with clickable links. */

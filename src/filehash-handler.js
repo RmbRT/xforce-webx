@@ -10,22 +10,24 @@ else
 
 var FileHashReport = {
 
+	/** Registers the file hash report module*/
 	registerInBackgroundScript: function(){
 		ContextMenu.addEntry(
 			"Context.FileHashReport",
 			"Get Filehash Report",
 			["all"],
 			FileHashReport.contextListener);
+
 		Messaging.listen("Context.FileHashReport.Query", (hash) => {
 			return new Promise((resolve, reject) => {
-				XForceAPI.fileHash(
+				fileHashReportCache.queryReport(
 					hash,
-					success => { resolve(success); },
-					errorResponse => { reject({
+					(success) => { resolve(success); },
+					(errorResponse) => { reject({
 						type: "ErrorResponse",
 						response: errorResponse
 					}); },
-					connectionError => { reject({
+					(connectionError) => { reject({
 						type: "ConnectionError",
 						response: connectionError
 					}); });
@@ -85,9 +87,13 @@ var FileHashReport = {
 		});
 
 		button.addEventListener("click", () => {
-			Messaging.sendToBackground("Context.FileHashReport.Query", input.value).then((report) => {
-				displayReport(report);
-			}).catch((error) => alert("Error: " + JSON.stringify(error)));
+			Messaging.sendToBackground(
+				"Context.FileHashReport.Query",
+				input.value).then((report) => {
+				FileHashReport.displayReport(report);
+			}).catch((error) => {
+				alert("Error: " + JSON.stringify(error));
+			});
 		});
 	},
 
@@ -97,7 +103,7 @@ var FileHashReport = {
 			e.classList.add("xforce-api-report");
 
 			function getRow(name, value) {
-				if(!value)
+				if(!value || value === "")
 					return "";
 				else
 					return `
@@ -127,13 +133,13 @@ var FileHashReport = {
 
 			function getOrigins(report) {
 				if(!report.malware.origins)
-					return "";
+					return "none";
 
 
 				function getMalwareServers(malservers) {
 					if(!malservers
 					|| !malservers.rows
-					|| !malservers.rows.length === 0)
+					|| malservers.rows.length === 0)
 						return "";
 
 					malservers = malservers.rows;
@@ -163,6 +169,8 @@ var FileHashReport = {
 	</table>
 </div>`;
 					}
+
+					return servers;
 				}
 
 				function getExternal(external) {
@@ -195,9 +203,9 @@ var FileHashReport = {
 
 			e.innerHTML =
 `<div class="root">
-	<div class="risk-box ${config.threatLevel(report.malware.risk)}-risk">
+	<div class="risk-box ${report.malware.risk}-risk">
 		<div class="DIV_3">Risk</div>
-		<div class="DIV_4">${report.score}</div>
+		<div class="DIV_4">${report.malware.risk}</div>
 	</div>
 	<div class="DIV_5">
 		<div class="DIV_6">
@@ -219,50 +227,15 @@ var FileHashReport = {
 				${getRow("Family", getStringList(report.malware.family))}
 				${getRow("md5", report.malware.md5)}
 				${getRow("Mimetype", report.malware.mimetype)}
-					<tr class="TR_49">
-						<th class="TH_50">Type</th>
-						<td class="TD_51">${report.malware.type}</td>
-					</tr>
-					<tr class="TR_49">
-						<th class="TH_50">md5</th>
-						<td class="TD_51">${report.malware.md5}</td>
-					</tr>
-					<tr class="TR_49">
-						<th class="TH_50">Categorization</th>
-						<td class="TD_51">
-							<ul class="UL_52">${catString}</ul>
-						</td>
-					</tr>
-					<tr class="TR_49">
-						<th class="TH_50">Full URL</th>
-						<td class="TD_51">${request}</td>
-					</tr>
+				${getRow("Origins", getOrigins(report))}
 				</tbody>
 			</table>
 		</div>
 	</div>
 </div>`;
 
-			e.style = `
-				position: fixed;
-				top: 20%;
-				bottom: 20%;
-				left: 20%;
-				right: 20%;
-				overflow: scroll;
-
-				background: white;
-				border: #888 solid 1px;
-				box-shadow: 0px 3px 3px rgba(0,0,0,0.5);
-
-				z-index: 99999;
-
-				font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-				font-size: 12px;
-				color: black;`;
-
 			document.body.appendChild(e);
-			e.addEventListener("mouseleave", document.body.removeChild(e));
+			//e.addEventListener("mouseleave", () => document.body.removeChild(e));
 		});
 	}
 };

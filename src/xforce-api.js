@@ -12,7 +12,7 @@ function XForce(user, password) {
 
 // only executes if part of the plugin (and not directly included into a HTML document).
 if(window.browser) {
-	Config.load((o) => {
+	Config.get((o) => {
 		// create the global API object.
 		window.XForceAPI = new XForce(o.name(), o.password());
 	}, (e) => {
@@ -50,27 +50,38 @@ XForce.prototype.request = function(
 	https.open(method, "https://api.xforce.ibmcloud.com/" + url, true);
 	https.onreadystatechange = function() {
 		// 4 == finished loading.
-		if(https.readyState == 4)
-		{
-			var response;
-			if(typeof(https.response) === "string")
-				try {
-				response = JSON.parse(https.response);
-				} catch(e) {
-					onConnectionError(e);
-					return;
-				}
-			else
-				response = https.response;
+		if(https.readyState !== 4)
+			return;
 
-			if(response["error"])
-				onErrorResponse(response.error);
-			else
-				onResponse(response);
+		console.error(https);
+		if(https.status === 0) {
+			console.error("DETECTED 0, aborting onreadystatechange.");
+			//onConnectionError(`XHR connection status 0.`);
+			return;
 		}
+
+		var response;
+		if(typeof(https.response) === "string") {
+			try {
+				response = JSON.parse(https.response);
+			} catch(e) {
+				onConnectionError(`Invalid response: ${e}, response was: ${https.response}.`);
+				return;
+			}
+		} else {
+			response = https.response;
+		}
+
+		if(response["error"])
+			onErrorResponse(response.error);
+		else
+			onResponse(response);
 	};
 
-	https.onerror = https.onabort = https.ontimeout = onConnectionError;
+	https.onerror = (e) => { onConnectionError(`XHR error.`); };
+	https.onabort = (e) => { onConnectionError(`XHR abort: ${JSON.stringify(e)}`); };
+	https.ontimeout = (e) => { onConnectionError(`XHR timeout: ${JSON.stringify(e)}`); };
+
 	https.setRequestHeader("Accept", "application/json");
 	https.setRequestHeader("Authorization", "Basic " + this._login);
 	https.send(body);

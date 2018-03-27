@@ -28,18 +28,28 @@
 }
 
 .xforce-hash-input input {
-	border: none;
-	outline: 1px solid #888;
+	outline: none;
+	display: inline-block;
+	box-sizing: content-box;
+	border: 1px solid #888;
 	box-sizing: content-box;
 	margin: 0px 5px;
 	font-family: inherit;
 	font-weight: inherit;
 	font-size: inherit;
 	padding: 5px;
+	line-height: 1.5em;
 	color: inherit;
 	height: 1em;
+	border-radius: 2px;
 }
 
 .xforce-hash-input input[type="text"] {
 	width: 75%;
+	box-shadow: 0 2px 2px inset rgba(0,0,0,0.5);
+}
+
+.xforce-hash-input input[type="button"] {
+	margin-top: 20px;
+	box-shadow: 0 2px 2px rgba(0,0,0,0.5);
 }

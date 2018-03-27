@@ -65,8 +65,15 @@ var Collections = {
 		// clear the result container, for sanity.
 		result.innerHTML = "";
 		// populate the container.
-		for(var i = 0; i < collections.length; i++)
-			result.appendChild(Collections.convertToHTML(collections[i], active));
+		if(collections.length) {
+			for(var i = 0; i < collections.length; i++)
+				result.appendChild(Collections.convertToHTML(collections[i], active));
+		} else {
+			var node = document.createElement("span");
+			node.classList.add("no-collections-msg");
+			node.innerText = `You have no ${targetId} collections.`;
+			result.appendChild(node);
+		}
 	},
 	/** method that invokes an XForce API Call to retrieve all private Collections.
 		@param active
@@ -142,7 +149,7 @@ var Collections = {
 	
 };
 
-/
+
 document.addEventListener("DOMContentLoaded", function() {
 	Messaging.sendToBackground("Collection.active").then((active) => {
 		var intervalId = setInterval(() => {

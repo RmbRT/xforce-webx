@@ -9,15 +9,22 @@ const Messaging = {
 		@param message:
 			The received message.
 		@param channel:
-			The communication channel.
+			Optional: The communication channel.
 		@return
 			The response to the received message, or nothing. If an asynchronous response is wanted, then a Promise has to be returned. */
 	listen: function(channel, handler) {
 		var ret = browser.runtime.onMessage.addListener(((channel, handler) => { return function(message, sender, sendResponse) {
 			// only pass messages that are sent over the requested channel.
 			if(message.channel === channel) {
-				// pass the message to the handler.
-				const reply = handler(message.message, message.channel);
+				var reply;
+				try {
+					// pass the message to the handler.
+					reply = handler(message.message, message.channel);
+				} catch(e) {
+					return new Promise((resolve, reject) => {
+						reject(e);
+					});
+				}
 				// if the reply is a promise, return it.
 				if(reply && Promise.resolve(reply) == reply)
 					return reply;
