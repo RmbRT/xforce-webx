@@ -69,9 +69,8 @@ var FileHashReport = {
 		header.innerText = "Filehash form";
 		var input = document.createElement('input');
 		input.type = "text";
-		var button = document.createElement("input");
-		button.type = "button";
-		button.value = "request";
+		var button = document.createElement("button");
+		button.innerText = "request";
 
 		container.appendChild(header);
 		container.appendChild(input);
@@ -92,7 +91,7 @@ var FileHashReport = {
 				input.value).then((report) => {
 				FileHashReport.displayReport(report);
 			}).catch((error) => {
-				alert("Error: " + JSON.stringify(error));
+				alert(`${error.type}: ${error.response}`);
 			});
 		});
 	},
@@ -235,7 +234,7 @@ var FileHashReport = {
 </div>`;
 
 			document.body.appendChild(e);
-			//e.addEventListener("mouseleave", () => document.body.removeChild(e));
+			e.addEventListener("mouseleave", () => document.body.removeChild(e));
 		});
 	}
 };

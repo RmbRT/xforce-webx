@@ -21,16 +21,19 @@ const Messaging = {
 					// pass the message to the handler.
 					reply = handler(message.message, message.channel);
 				} catch(e) {
-					return new Promise((resolve, reject) => {
-						reject(e);
-					});
+					sendResponse({error: e});
+					return;
 				}
 				// if the reply is a promise, return it.
 				if(reply && Promise.resolve(reply) == reply)
-					return reply;
+					return new Promise((resolve, reject) => {
+						reply.then(
+							response => resolve({response: response}),
+							error => resolve({error: error}));
+					});
 				// otherwise, if it is a message, send it.
 				else if(reply !== undefined)
-					sendResponse(reply);
+					sendResponse({response: reply});
 			}
 		}; })(channel, handler));
 	},
@@ -45,6 +48,11 @@ const Messaging = {
 		return browser.runtime.sendMessage({
 			channel: channel,
 			message: message
+		}).then(o => {
+			if(o.error)
+				throw o.error;
+			else
+				return o.result;
 		});
 	},
 	/** Sends a message over a channel to a content script in a specified tab.
@@ -61,6 +69,11 @@ const Messaging = {
 			tab, {
 				channel: channel,
 				message: message
+			}).then(o => {
+				if(o.error)
+					throw o.error;
+				else
+					return o.result;
 			});
 	}
 };

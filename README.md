@@ -12,7 +12,7 @@ This is a WebExtension for the IBM X-Force API intended for security analysts. T
 
 # User guide
 ## Using the pop-up
-When clicking on the extension's icon, a window pops up. Here, one can browse one's public and shared collections and select an active collection. An active collection has to be chosen before any collections can be edited.
+When clicking on the extension's icon, a window pops up. Here, one can browse one's private and shared collections and select an active collection. An active collection has to be chosen before any collections can be edited. Editing collections will be explained in a later section.
 
 In the `About` section, there is a link to the project's official repository, as well as a license statement and a list of authors.
 
@@ -23,7 +23,7 @@ When right-clicking on a web site, a context menu pops up, which contains comman
 This option creates an input mask into which a file hash can be entered. When submitting the input, a file hash report is requested from IBM and displayed.
 
 ### Get URL Report
-When right-clicking a link, an additional command becomes available, wich requests an URL report of the clicked link.
+When right-clicking a link, an additional command becomes available, which requests and displays an URL report of the clicked link. URL reports contain a button which adds the URL report to the currently active collection.
 
 # Current state
 * The user can save their IBM credentials and create URL reports with the click of a button directly on any web page.

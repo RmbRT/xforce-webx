@@ -5,8 +5,6 @@ const urlDomain = ((a)=> { return function(url) {
 };})(document.createElement("a"));
 
 /** Adds a report to all links to a url.
-@param url:
-	The url the report belongs to.
 @param report:
 	The report returned by the X-Force API.
 @param request:
@@ -17,18 +15,14 @@ const addReport = ((globalReport) => { return function(report, request) {
 
 	Config.get(config => {
 
-		for(var i = 0; i < links.length; i++)
-			if(links[i].hasAttribute("href") &&links[i].href === request)
-			//&& links[i].hostname == hostname)
-			{
-				// create the report html element.
-				var e = document.createElement("span");
+		// create the report html element.
+		var e = document.createElement("span");
 
-				var catString = "";
-				for(var cat in report.cats)
-					catString += `<li class="LI_53">${cat}</li>`;
+		var catString = "";
+		for(var cat in report.cats)
+			catString += `<li class="LI_53">${cat}</li>`;
 
-				e.innerHTML =
+		e.innerHTML =
 `<div class="root">
 	<div class="risk-box ${config.threatLevel(report.score)}-risk">
 		<div class="DIV_3">Risk</div>
@@ -63,28 +57,33 @@ const addReport = ((globalReport) => { return function(report, request) {
 		</div>
 	</div>
 </div>`;
-				e.querySelector("button").addEventListener("click", (url => { return function() {
-					Messaging.sendToBackground("Collection.addReport", url).then((r)=>{
-						alert("Success: " + JSON.stringify(r));
-					}).catch((e)=>{
-						alert("Error: " + JSON.stringify(e));
-					});
-				}; })(request));
 
-				e.classList.add("xforce-api-report");
+		e.querySelector("button").addEventListener("click", (url => { return function() {
+			Messaging.sendToBackground("Collection.addReport", url).then((r)=>{
+				alert("Success: " + JSON.stringify(r));
+			}).catch((e)=>{
+				alert("Error: " + JSON.stringify(e));
+			});
+		}; })(request));
 
-				e.addEventListener("mouseleave", function() {
-					document.body.removeChild(this);
-					globalReport = null;
-				});
+		e.classList.add("xforce-api-report");
 
-				// display URL report.
-				if(globalReport)
-					document.body.removeChild(globalReport);
+		e.addEventListener("mouseleave", function() {
+			document.body.removeChild(this);
+			globalReport = null;
+		});
 
-				document.body.appendChild(e);
-				globalReport = e;
+		// display URL report.
+		if(globalReport)
+			document.body.removeChild(globalReport);
 
+		document.body.appendChild(e);
+		globalReport = e;
+
+		for(var i = 0; i < links.length; i++)
+			if(links[i].hasAttribute("href") &&links[i].href === request)
+			//&& links[i].hostname == hostname)
+			{
 				// add listener for displaying the report.
 				links[i].addEventListener("mouseenter", ((curry) => { return function() {
 					if(!config.rememberReports())

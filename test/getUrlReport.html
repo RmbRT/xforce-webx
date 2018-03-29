@@ -2,6 +2,7 @@
 <html>
 <head>
 	<meta charset='utf-8' />
+	<script src="requirement-test.js"></script>
 	<script src="../src/xforce-api.js"></script>
 </head>
 <body>
@@ -24,10 +25,13 @@
 
 			API.urlReport(url,
 				function(response) {
-					document.getElementById("output").innerText += "\n" + (response);
+					document.getElementById("output").innerText += "\n" + JSON.stringify(response);
 				},
 				function(e) {
 					document.getElementById("output").innerText += "\nError: " + e;
+				},
+				function(e) {
+					document.getElementById("output").innerText += "\nConnectionError: " + e;
 				});
 		}
 	</script>

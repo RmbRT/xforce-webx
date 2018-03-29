@@ -53,10 +53,8 @@ XForce.prototype.request = function(
 		if(https.readyState !== 4)
 			return;
 
-		console.error(https);
-		if(https.status === 0) {
-			console.error("DETECTED 0, aborting onreadystatechange.");
-			//onConnectionError(`XHR connection status 0.`);
+		if(https.status !== 2) {
+			// only handle successful responses.
 			return;
 		}
 
@@ -79,8 +77,8 @@ XForce.prototype.request = function(
 	};
 
 	https.onerror = (e) => { onConnectionError(`XHR error.`); };
-	https.onabort = (e) => { onConnectionError(`XHR abort: ${JSON.stringify(e)}`); };
-	https.ontimeout = (e) => { onConnectionError(`XHR timeout: ${JSON.stringify(e)}`); };
+	https.onabort = (e) => { onConnectionError(`XHR abort.`); };
+	https.ontimeout = (e) => { onConnectionError(`XHR timeout.`); };
 
 	https.setRequestHeader("Accept", "application/json");
 	https.setRequestHeader("Authorization", "Basic " + this._login);

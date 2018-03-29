@@ -2,29 +2,57 @@
 <html>
 <head>
 	<meta charset='utf-8' />
+	<script src="requirement-test.js"></script>
 	<script src="../src/report-cache.js"></script>
 </head>
 <body>
-	<p>domain: <input id="url" type="text" /></p>
-	<p><button onclick="insert()">insert</button>
+	<h1>URL Report cache test.</h1>
+	<p>This file tests <code>src/report-cache.js</code>.</p>
 	<pre><code id="output"></code></pre>
 
 	<script>
-		function insert()
+		function insert(url, shouldSucceed)
 		{
 			var console = document.getElementById("output");
-			var url = document.getElementById("url").value;
 
 			console.innerText += "\n\nInserting entry for '" + url + "'";
 
 			if(reportCache.findReport(url))
+			{
 				console.innerText += "\nAn entry already exists. Ignoring.";
+				if(!shouldSucceed)
+					console.innerText +="\nExpected outcome.";
+				else {
+					throw "Unexpected outcome!";
+				}
+			}
 			else
 			{
 				console.innerText += "\nNo entry exists yet. Inserting.";
-				reportCache.addReport({url: url});
+				reportCache.addReport({request: url});
+				if(shouldSucceed)
+					console.innerText +="\nExpected outcome.";
+				else {
+					throw "Unexpected outcome!";
+				}
 			}
 		}
+
+		document.addEventListener("DOMContentLoaded", () => {
+			var console = document.getElementById("output");
+			try {
+				insert("1", true);
+				insert("2", true);
+				insert("3", true);
+				insert("1", false);
+				insert("2", false);
+				insert("3", false);
+
+				console.innerText += "\n\nSUCCESS.";
+			} catch(e) {
+				console.innerText +="\nEXCEPTION: " + e + "\nFailed.";
+			}
+		});
 	</script>
 </body>
 </html>

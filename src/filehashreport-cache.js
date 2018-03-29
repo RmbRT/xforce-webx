@@ -49,7 +49,7 @@ FileHashReportCache.prototype.addReport = function(report) {
 	The callback that will be called if the API returns an error.
 @param onConnectionError:
 	The callback that will be called if there is a connection error. */
-FileHashReportCache.queryReport = function(
+FileHashReportCache.prototype.queryReport = function(
 	hash,
 	onSuccess,
 	onErrorMessage,
