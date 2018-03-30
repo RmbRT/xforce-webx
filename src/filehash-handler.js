@@ -9,7 +9,54 @@ else
 		"response.js"]);
 
 var FileHashReport = {
-
+	dummyResponse: {
+		"malware": {
+			"origins": {
+				"emails": {},
+				"CnCServers": {
+					"rows": [
+					{
+						"type": "CnC",
+						"md5": "474B9CCF5AB9D72CA8A333889BBB34F0",
+						"domain": "pc-guard.net",
+						"firstseen": "2014-10-20T23:19:00Z",
+						"lastseen": "2014-10-20T23:19:00Z",
+						"ip": "61.255.239.86",
+						"count": 483,
+						"schema": "http",
+						"filepath": "v.html",
+						"origin": "CnC",
+						"uri": "http://pc-guard.net/v.html"
+					}
+					],
+					"count": 1
+				},
+				"downloadServers": {},
+				"subjects": {},
+				"external": {
+					"detectionCoverage": 44,
+					"family": [
+					"heuristic",
+					"trojan"
+					]
+				}
+			},
+			"type": "md5",
+			"md5": "0x474B9CCF5AB9D72CA8A333889BBB34F0",
+			"hash": "0x474B9CCF5AB9D72CA8A333889BBB34F0",
+			"created": "2014-10-20T23:19:00Z",
+			"family": [
+			"tsunami"
+			],
+			"familyMembers": {
+				"tsunami": {
+					"count": 61
+				}
+			},
+			"risk": "high"
+		},
+		"tags": []
+	},
 	/** Registers the file hash report module*/
 	registerInBackgroundScript: function(){
 		ContextMenu.addEntry(
@@ -20,17 +67,23 @@ var FileHashReport = {
 
 		Messaging.listen("Context.FileHashReport.Query", (hash) => {
 			return new Promise((resolve, reject) => {
-				fileHashReportCache.queryReport(
-					hash,
-					(success) => { resolve(success); },
-					(errorResponse) => { reject({
-						type: "ErrorResponse",
-						response: errorResponse
-					}); },
-					(connectionError) => { reject({
-						type: "ConnectionError",
-						response: connectionError
-					}); });
+				Config.get(config => {
+					if(config.dummyResponses()) {
+						resolve(FileHashReport.dummyResponse);
+					} else {
+						fileHashReportCache.queryReport(
+							hash,
+							(success) => { resolve(success); },
+							(errorResponse) => { reject({
+								type: "ErrorResponse",
+								response: errorResponse
+							}); },
+							(connectionError) => { reject({
+								type: "ConnectionError",
+								response: connectionError
+							}); });
+					}
+				});
 			});
 		});
 	},

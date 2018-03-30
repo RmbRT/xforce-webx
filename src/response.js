@@ -12,8 +12,9 @@ const urlDomain = ((a)=> { return function(url) {
 const addReport = ((globalReport) => { return function(report, request) {
 	var links = document.getElementsByTagName("a");
 	const hostname = urlDomain(request);
-
+	console.error("FEFE");
 	Config.get(config => {
+		console.error("addReport");
 
 		// create the report html element.
 		var e = document.createElement("span");
@@ -79,6 +80,7 @@ const addReport = ((globalReport) => { return function(report, request) {
 
 		document.body.appendChild(e);
 		globalReport = e;
+		console.error("addReport 2");
 
 		for(var i = 0; i < links.length; i++)
 			if(links[i].hasAttribute("href") &&links[i].href === request)

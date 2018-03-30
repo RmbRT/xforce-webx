@@ -25,7 +25,8 @@ function Config(
 	threat_medium,
 	threat_high,
 	remember_reports,
-	parse_links) {
+	parse_links,
+	dummy_responses) {
 	// check and set name.
 	if(typeof(name) !== "string")
 		throw new TypeError("name must be a string.");
@@ -65,6 +66,11 @@ function Config(
 		throw new TypeError("parse_links must be a boolean.");
 	else
 		this._parse_links = parse_links;
+
+	if(typeof(dummy_responses) !== "boolean")
+		throw new TypeError("dummy_responses must be a boolean.");
+	else
+		this._dummy_responses = dummy_responses;
 }
 
 /** Creates a config object from a json object. */
@@ -76,7 +82,8 @@ Config.fromJSON = function(json) {
 		json.threat_medium,
 		json.threat_high,
 		json.remember_reports,
-		json.parse_links);
+		json.parse_links,
+		json.dummy_responses);
 };
 
 /** Converts a config object into a json object. */
@@ -88,12 +95,13 @@ Config.prototype.toJSON = function() {
 		"threat_medium": this._threat_medium,
 		"threat_high": this._threat_high,
 		"remember_reports": this._remember_reports,
-		"parse_links": this._parse_links
+		"parse_links": this._parse_links,
+		"dummy_responses": this._dummy_responses
 	};
 };
 
 /** The keys used to load and save the config object. */
-Config.fields = ["name", "password", "auto_check", "threat_medium", "threat_high", "remember_reports", "parse_links"];
+Config.fields = ["name", "password", "auto_check", "threat_medium", "threat_high", "remember_reports", "parse_links", "dummy_responses"];
 
 /** The default config values.
 	This is used to create initial config values. */
@@ -104,7 +112,8 @@ Config.defaultJSON = {
 	"threat_medium": 4,
 	"threat_high": 7,
 	"remember_reports": false,
-	"parse_links": true
+	"parse_links": true,
+	"dummy_responses": false
 };
 
 /** Default config object. */
@@ -194,6 +203,9 @@ Config.prototype.rememberReports = function() { return this._remember_reports; }
 
 Config.prototype.parseLinks = function() { return this._parse_links; };
 
+/** Returns whether dummy responses should be used. */
+Config.prototype.dummyResponses = function() { return this._dummy_responses; };
+
 /** Classifies a threat level.
 	The classification depends on the `threatMedium` and `threatHigh` properties.
 @return
@@ -212,7 +224,7 @@ Config._global = new Promise((resolve, reject) => {
 	Config.load(resolve, reject);
 });
 // update the global config automatically.
-Config.listenForUpdates((c) => { Config._global.resolve(c); });
+Config.listenForUpdates((c) => { Config._global = Promise.resolve(c); });
 
 /** Retrieves the config object.
 @param then:
@@ -221,7 +233,7 @@ Config.listenForUpdates((c) => { Config._global.resolve(c); });
 	Optional: Callback that is called when the loading failed. */
 Config.get = function(then, fail) {
 	if(arguments.length === 1)
-		Config._global.then(c => { then(c); });
+		Config._global.then(c => { then(c); return c; });
 	else
-		Config._global.then(c => { then(c); }, fail);
+		Config._global.then(c => { then(c); return c; }, c => { fail(c); return c; });
 };

@@ -59,6 +59,7 @@ function loadSettings() {
 			triggerChange("threat-high");
 			document.getElementById("remember-reports").checked = !!c.rememberReports();
 			document.getElementById("parse-links").checked = !!c.parseLinks();
+			document.getElementById("dummy-responses").checked = !!c.dummyResponses();
 		} catch(e) {
 			displayError("Internal: " + e);
 		}
@@ -162,7 +163,8 @@ document.addEventListener("DOMContentLoaded", ((allValid) => { return function()
 			"threat_medium": Number.parseInt(document.getElementById("threat-medium").value),
 			"threat_high": Number.parseInt(document.getElementById("threat-high").value),
 			"remember_reports": document.getElementById("remember-reports").checked,
-			"parse_links": document.getElementById("parse-links").checked
+			"parse_links": document.getElementById("parse-links").checked,
+			"dummy_responses": document.getElementById("dummy-responses").checked
 		};
 
 		// validate the input.

@@ -162,6 +162,6 @@ document.addEventListener("DOMContentLoaded", function() {
 		}
 	}, 10);
 	}).catch(() => {
-		alert("Communication error.")
+		alert("Communication error.");
 	});	
 });	

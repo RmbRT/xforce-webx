@@ -10,21 +10,24 @@
 
 	padding: 15px;
 
-	background: white;
 	border: #888 solid 1px;
 
 	box-shadow: 0px 3px 3px rgba(0,0,0,0.5);
 
 	z-index: 99999;
+}
 
-	font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-	font-size: 12px;
-	color: black;
+.xforce-hash-input, .xforce-hash-input * {
+	background: white !important;
+	font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif !important;
+	font-size: 12px !important;
+	color: black !important;
 }
 
 .xforce-hash-input .header {
-	font-size: 1.5em;
+	font-size: 1.5em !important;
 	margin: 5px;
+	border: none !important;
 }
 
 .xforce-hash-input input {

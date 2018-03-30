@@ -10,6 +10,47 @@ else
 
 /** The context menu URL report command. */
 var URLReportCommand = {
+	dummyResponse: {
+		"url": "www.ibm.com",
+		"request": "www.ibm.com",
+		"cats": {
+			"Software / Hardware": true,
+			"General Business": true
+		},
+		"score": 1,
+		"application": {
+			"canonicalName": "ibm kenexa companalyst",
+			"name": "IBM Kenexa CompAnalyst",
+			"description": "An compensation tool for employees.",
+			"actionDescriptions": {},
+			"categories": {
+				"Software / Hardware": true,
+				"General Business": true
+			},
+			"categoryDescriptions": {
+				"Software / Hardware": "This category includes Web sites from the area of software, computer hardware and other electronic components.",
+				"General Business": "This category includes Web sites of industry, business, economy and supply of services."
+			},
+			"id": 8678,
+			"actions": {},
+			"score": 0.2,
+			"baseurl": "http://01.ibm.com/software/smarterworkforce/compensation_divestiture",
+			"urls": [
+				"ibm.com",
+				"www-03.ibm.com"
+			],
+			"riskfactors": {
+				"insecure communication": {
+					"value": 16,
+					"description": "Limited parts of this application are provided over an unencrypted connection"
+				}
+			}
+		},
+		"categoryDescriptions": {
+			"Software / Hardware": "This category includes Web sites from the area of software, computer hardware and other electronic components.",
+			"General Business": "This category includes Web sites of industry, business, economy and supply of services."
+		}
+	},
 	/** Registers the button in the context menu.
 		This should be called from the background script. */
 	registerInBackgroundScript: function() {
@@ -21,32 +62,43 @@ var URLReportCommand = {
 	},
 	/** The listener for the context menu button. */
 	contextListener: function(info, tab) {
-		reportCache.queryReport(
-			info.linkUrl,
-			(response) => {
+		Config.get(config => {
+			if(config.dummyResponses()) {
 				Messaging.sendToContent(
 					tab.id,
 					"URLReport.success", {
-						content: response,
+						content: URLReportCommand.dummyResponse,
 						request: info.linkUrl
 					});
-			},
-			(response) => {
-				Messaging.sendToContent(
-					tab.id,
-					"URLReport.errorResponse", {
-						content: response,
-						request: info.linkUrl
+			} else {
+				reportCache.queryReport(
+					info.linkUrl,
+					(response) => {
+						Messaging.sendToContent(
+							tab.id,
+							"URLReport.success", {
+								content: response,
+								request: info.linkUrl
+							});
+					},
+					(response) => {
+						Messaging.sendToContent(
+							tab.id,
+							"URLReport.errorResponse", {
+								content: response,
+								request: info.linkUrl
+							});
+					},
+					(response) => {
+						Messaging.sendToContent(
+							tab.id,
+							"URLReport.connectionError", {
+								content:response,
+								request:info.linkUrl
+							});
 					});
-			},
-			(response) => {
-				Messaging.sendToContent(
-					tab.id,
-					"URLReport.connectionError", {
-						content:response,
-						request:info.linkUrl
-					});
-			});
+			}
+		});
 	},
 	/** Registers the response listeners in the content script.
 		This function must be called from the content script. */
@@ -55,7 +107,7 @@ var URLReportCommand = {
 		Messaging.listen(
 			"URLReport.success",
 			// add received reports to the visited page.
-			success => addReport(success.content, success.request));
+			success => {console.error("SUCCESS"); addReport(success.content, success.request); });
 
 		// listen for API errors.
 		Messaging.listen(
