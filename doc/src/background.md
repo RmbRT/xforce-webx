@@ -1,4 +1,4 @@
-# background.md
+# background.js
 
 This file is the main background script file. It includes all other background script files and contains the code execution, while the other files only contain definitions.
 
