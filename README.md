@@ -47,6 +47,6 @@ Since there is no tool for automatically testing WebExtensions, modules are test
 
 #Images
 Loading the addon: 
-![alt text](https://github.com/RmbRT/xforce-webx/blob/master/Readme%20Pictures/aboutDebugging.png "about:debugging")
+![alt text](https://raw.githubusercontent.com/RmbRT/xforce-webx/master/Readme%20Pictures/aboutDebugging.png "about:debugging")
 
 
