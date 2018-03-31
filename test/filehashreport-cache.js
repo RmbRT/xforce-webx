@@ -23,7 +23,7 @@ function insert(hash, shouldSucceed, log)
 	}
 }
 
-TestSuite.test("report-cache.js", log => {
+TestSuite.test("filehashreport-cache.js", log => {
 		insert("0x1234", true, log);
 		insert("0x5678", true, log);
 		insert("0x9abc", true, log);
