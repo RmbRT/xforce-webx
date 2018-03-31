@@ -16,6 +16,8 @@ Requirement.need("config.js", [
 	Boolean: Whether to remember URL reports, so that they reappear when hovering their link.
 @param parse_links:
 	Boolean: Whether to parse the site for plaintext links and convert them to clickable links.
+@param dummy_responses:
+	Boolean: Whether to replace X-Force API calls with dummy responses.
 @throws TypeError
 	If any of the arguments is not of the required type. */
 function Config(
@@ -201,6 +203,7 @@ Config.prototype.threatHigh = function() { return this._threat_high; };
 /** Returns whether reports are remembered. */
 Config.prototype.rememberReports = function() { return this._remember_reports; };
 
+/** Returns whether plaintext links should be parsed and replaced. */
 Config.prototype.parseLinks = function() { return this._parse_links; };
 
 /** Returns whether dummy responses should be used. */
