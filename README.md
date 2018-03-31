@@ -8,7 +8,8 @@ This is a WebExtension for the IBM X-Force API intended for security analysts. T
 
 	> While the extension is not yet officially listed at Mozilla, the extension has to be added manually. This is done by cloning the repository and visiting the `about:debugging` URL in Firefox. Then, after clicking on `Load Temporary Add-on`, one has to navigate into the `xforce-webx/src/` folder and select `manifest.js`.
 
-0. Visit the options page (in `about:addons`) and enter an IBM API key into the form. Other options can be customised to one's liking and then the `Save changes` button has to be pressed. The detailed descriptions for all options are on the options page.
+
+0. Visit the options page (in `about:addons`, under the extension Tab) and enter an IBM API key into the form. Other options can be customised to one's liking and then the `Save changes` button has to be pressed. The detailed descriptions for all options are on the options page.
 
 # User guide
 ## Using the pop-up
@@ -43,3 +44,9 @@ Since there is no tool for automatically testing WebExtensions, modules are test
 * `test/getUrlReport.html` is a test for the url report feature.
 * `test/ipAddressTest.html` is a test for the IP and URL parser.
 * `test/reportCache.html` is a test for the URL report cache.
+
+#Images
+Loading the addon: 
+![alt text](https://github.com/RmbRT/xforce-webx/blob/master/Readme%20Pictures/aboutDebugging.png"about:debugging")
+
+
