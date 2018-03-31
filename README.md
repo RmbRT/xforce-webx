@@ -40,10 +40,11 @@ When right-clicking a link, an additional command becomes available, which reque
 * Detecting links added/changed via javascript.
 
 # Tests
-Since there is no tool for automatically testing WebExtensions, modules are tested in test files. These can be found in the `test` directory.
-* `test/getUrlReport.html` is a test for the url report feature.
-* `test/ipAddressTest.html` is a test for the IP and URL parser.
-* `test/reportCache.html` is a test for the URL report cache.
+Since there is no tool for automatically testing WebExtensions, modules are tested in test files. These can be found in the `test/test-suite.html`.
+
+# Documentation
+
+Documentation is inside the `doc` folder, every file has a corresponding `.md` file that documents it.
 
 # Images
 Loading the addon: 
