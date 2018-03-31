@@ -152,16 +152,26 @@ Config.load = function(then, fail) {
 		throw new TypeError("fail must be a function taking 1 argument.");
 
 	// attempt to load the configuration object.
-	browser.storage.local.get(Config.fields).then(
-		((then) => { return (c) => {
-			// replace unset values with default values.
-			for(var i = 0; i < Config.fields.length; i++)
-				if(!(Config.fields[i] in c))
-					c[Config.fields[i]] = Config.defaultJSON[Config.fields[i]];
-			// return the config object.
-			then(Config.fromJSON(c));
-		};
-	})(then)).catch(fail);
+	if(chrome)
+		browser.storage.local.get(Config.fields, (c) => {
+				// replace unset values with default values.
+				for(var i = 0; i < Config.fields.length; i++)
+					if(!(Config.fields[i] in c))
+						c[Config.fields[i]] = Config.defaultJSON[Config.fields[i]];
+				// return the config object.
+				then(Config.fromJSON(c));
+			};
+		});
+	else
+		browser.storage.local.get(Config.fields).then((c) => {
+				// replace unset values with default values.
+				for(var i = 0; i < Config.fields.length; i++)
+					if(!(Config.fields[i] in c))
+						c[Config.fields[i]] = Config.defaultJSON[Config.fields[i]];
+				// return the config object.
+				then(Config.fromJSON(c));
+			};
+		}).catch(fail);
 };
 
 /** Saves a configuration object.
@@ -182,7 +192,10 @@ Config.prototype.save = function(then, fail) {
 	this.sendUpdate();
 
 	// attempt to save the configuration object.
-	browser.storage.local.set(this.toJSON()).then(then).catch(fail);
+	if(chrome)
+		chrome.storage.local.set(this.toJSON(), then);
+	else
+		browser.storage.local.set(this.toJSON()).then(then).catch(fail);
 };
 
 /** Returns the X-Force login name. */
