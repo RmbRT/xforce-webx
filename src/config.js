@@ -154,23 +154,21 @@ Config.load = function(then, fail) {
 	// attempt to load the configuration object.
 	if(chrome)
 		browser.storage.local.get(Config.fields, (c) => {
-				// replace unset values with default values.
-				for(var i = 0; i < Config.fields.length; i++)
-					if(!(Config.fields[i] in c))
-						c[Config.fields[i]] = Config.defaultJSON[Config.fields[i]];
-				// return the config object.
-				then(Config.fromJSON(c));
-			};
+			// replace unset values with default values.
+			for(var i = 0; i < Config.fields.length; i++)
+				if(!(Config.fields[i] in c))
+					c[Config.fields[i]] = Config.defaultJSON[Config.fields[i]];
+			// return the config object.
+			then(Config.fromJSON(c));
 		});
 	else
 		browser.storage.local.get(Config.fields).then((c) => {
-				// replace unset values with default values.
-				for(var i = 0; i < Config.fields.length; i++)
-					if(!(Config.fields[i] in c))
-						c[Config.fields[i]] = Config.defaultJSON[Config.fields[i]];
-				// return the config object.
-				then(Config.fromJSON(c));
-			};
+			// replace unset values with default values.
+			for(var i = 0; i < Config.fields.length; i++)
+				if(!(Config.fields[i] in c))
+					c[Config.fields[i]] = Config.defaultJSON[Config.fields[i]];
+			// return the config object.
+			then(Config.fromJSON(c));
 		}).catch(fail);
 };
 
