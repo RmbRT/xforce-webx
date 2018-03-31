@@ -11,12 +11,6 @@ var ForbiddenTags = {
 	"CODE":""
 };
 
-/** Parses the plaintext links from the document and replaces them with clickable links. */
-function treeTraverse(){
-	var rootNode = document.body;
-	traverseHelper(rootNode);
-}
-
 /** Method that checks a given text for the occurences of the given regex.
 	Matches will be converted to <a> tags.
 @param textNode:
@@ -48,6 +42,7 @@ function replaceTextNode(textNode, regex) {
 	}
 }
 
+/** Parses the plaintext links from the document and replaces them with clickable links. */
 function traverseHelper(rootNode){
 	if(rootNode.nodeType === Node.TEXT_NODE)
 	{
@@ -67,8 +62,10 @@ function traverseHelper(rootNode){
 	}
 }
 
-// if parsing links is enabled, parse links.
-Config.get(config => {
-	if(config.parseLinks())
-		treeTraverse();
-});
+function parseLinks() {
+	// if parsing links is enabled, parse links.
+	Config.get(config => {
+		if(config.parseLinks())
+			traverseHelper(document.body);
+	});
+}

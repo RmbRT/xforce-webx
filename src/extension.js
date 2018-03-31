@@ -1,5 +1,9 @@
 Requirement.need("extension.js", [
+	"config.js",
 	"url-report-command.js"]);
+
+
+Config.register();
 
 URLReportCommand.registerInContentScript(
 	// add received reports to the visited page.
@@ -10,3 +14,5 @@ URLReportCommand.registerInContentScript(
 	connectionError => alert("Connection Error: " + JSON.stringify(connectionError)));
 
 FileHashReport.registerInContentScript();
+
+parseLinks();

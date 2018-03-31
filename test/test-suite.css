@@ -1,0 +1,22 @@
+body {
+	max-width: 1024px;
+	margin: 0 auto;
+	font-family: "Helvetica Neue", Helvetica, sans-serif;
+	font-size: 1rem;
+	text-align: justify;
+	background-color: #f8f8f8;
+	color: black;
+}
+.success > h2 {
+	color: green;
+}
+
+.failure > h2 {
+	color: red;
+}
+
+.test {
+	margin: 2em 0;
+	border: black solid 1px;
+	padding: 0 2em 2em;
+}

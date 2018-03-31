@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>X-Force WebExtension Test Suite</title>
+	<script src="test-suite.js"></script>
+	<link rel="stylesheet" href="test-suite.css" />
+	<!-- Keep the includes happy. -->
+	<script src="requirement-test.js"></script>
+	<!-- Include source files to be tested. -->
+	<script src="../src/config.js"></script>
+	<script src="../src/collection-cache.js"></script>
+	<script src="../src/filehashreport-cache.js"></script>
+	<script src="../src/htmlParser.js"></script>
+	<script src="../src/report-cache.js"></script>
+	<script src="../src/xforce-api.js"></script>
+	<!-- Include test files. -->
+	<script src="collection-cache.js"></script>
+	<script src="filehashreport-cache.js"></script>
+	<script src="htmlParser.js"></script>
+	<script src="report-cache.js"></script>
+</head>
+<body>
+	<h1>X-Force WebExtension Test Suite</h1>
+	<p>
+		This automated test suite tests all automatically testable functionality of the web extension. However, since there is much functionality that depends on user interaction and privileged execution rights, such as loading the preferences, only a select few of the modules are tested here.
+	</p>
+	<div id="result-container" class="test success">
+		<h1>Overall status:</h1>
+		<h2 id="result">Success</h2>
+		<p><span id="successes">0</span> / <span id="tries">0</span> tests passed.</p>
+	</div>
+</body>
+</html>

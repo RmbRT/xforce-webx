@@ -219,12 +219,16 @@ Config.prototype.threatLevel = function(level) {
 		return "low";
 };
 
-// load the global config.
-Config._global = new Promise((resolve, reject) => {
-	Config.load(resolve, reject);
-});
-// update the global config automatically.
-Config.listenForUpdates((c) => { Config._global = Promise.resolve(c); });
+/** Sets up the global config object. */
+Config.register = function() {
+	// load the global config.
+	Config._global = new Promise((resolve, reject) => {
+		Config.load(resolve, reject);
+	});
+	// update the global config automatically.
+	Config.listenForUpdates((c) => { Config._global = Promise.resolve(c); });
+
+};
 
 /** Retrieves the config object.
 @param then:
