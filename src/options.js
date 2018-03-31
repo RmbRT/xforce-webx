@@ -1,6 +1,8 @@
 var displayTimeout = null;
 const toastLength = 10000;
 
+Config.register();
+
 function displayError(message) {
 	document.getElementById("error").innerText += "Error: " + message + "\n";
 	document.getElementById("success").innerText = "";
