@@ -153,7 +153,7 @@ Config.load = function(then, fail) {
 
 	// attempt to load the configuration object.
 	if(chrome)
-		browser.storage.local.get(Config.fields, (c) => {
+		chrome.storage.local.get(Config.fields, (c) => {
 			// replace unset values with default values.
 			for(var i = 0; i < Config.fields.length; i++)
 				if(!(Config.fields[i] in c))

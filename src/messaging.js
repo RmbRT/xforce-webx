@@ -13,7 +13,10 @@ const Messaging = {
 		@return
 			The response to the received message, or nothing. If an asynchronous response is wanted, then a Promise has to be returned. */
 	listen: function(channel, handler) {
-		var ret = browser.runtime.onMessage.addListener(((channel, handler) => { return function(message, sender, sendResponse) {
+		if(chrome)
+			window.browser = chrome;
+
+		browser.runtime.onMessage.addListener(((channel, handler) => { return function(message, sender, sendResponse) {
 			// only pass messages that are sent over the requested channel.
 			if(message.channel === channel) {
 				var reply;
@@ -45,6 +48,8 @@ const Messaging = {
 	@return
 		A Promise with a response, if any. */
 	sendToBackground: function(channel, message) {
+		if(chrome)
+			window.browser = chrome;
 		return browser.runtime.sendMessage({
 			channel: channel,
 			message: message
@@ -69,6 +74,8 @@ const Messaging = {
 	@return
 		A Promise with a response, if any. */
 	sendToContent: function(tab, channel, message) {
+		if(chrome)
+			window.browser = chrome;
 		console.error("sendToContent", tab, channel, message);
 		return browser.tabs.sendMessage(
 			tab, {
