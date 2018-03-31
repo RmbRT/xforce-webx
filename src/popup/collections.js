@@ -118,35 +118,7 @@ var Collections = {
 		}).catch((error) => {
 			console.error("[getShared] Messaging error", JSON.stringify(error), error);
 		});
-	},
-	addURLReport: function(id, url) {
-		XForceAPI.addURLReportToCollection(
-			document.getElementById("add-id").value,
-			document.getElementById("add-report").value,
-			function(result) {
-				alert(JSON.stringify(result));
-			},
-			function(error) {
-				alert(JSON.stringify(error));
-			}, function(error) {
-				alert(JSON.stringify(error));
-			});
-	},
-	addIPReport: function() {
-		XForceAPI.addIPReportToCollection(
-			document.getElementById("add-id").value,
-			document.getElementById("add-report").value,
-			function(result) {
-				alert(JSON.stringify(result));
-			},
-			function(error) {
-				alert(JSON.stringify(error));
-			}, function(error) {
-				alert(JSON.stringify(error));
-			});
-
-	},
-	
+	}
 };
 
 
