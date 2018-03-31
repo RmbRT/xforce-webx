@@ -45,9 +45,24 @@ Since there is no tool for automatically testing WebExtensions, modules are test
 * `test/ipAddressTest.html` is a test for the IP and URL parser.
 * `test/reportCache.html` is a test for the URL report cache.
 
-#Images
+# Images
 Loading the addon: 
 ![alt text](https://raw.githubusercontent.com/RmbRT/xforce-webx/master/Readme%20Pictures/aboutDebugging.png "about:debugging")
 
-Loading the addon: 
-![alt text](https://imgur.com/pkvXNq0 "about:debugging")
+Accessing the options menu:
+![alt text](https://raw.githubusercontent.com/RmbRT/xforce-webx/master/Readme%20Pictures/aboutAddons.png "about:debugging")
+
+The options menu:
+![alt text](https://raw.githubusercontent.com/RmbRT/xforce-webx/master/Readme%20Pictures/OptionsMenu.png "about:debugging")
+
+The toolbar menu:
+![alt text](https://raw.githubusercontent.com/RmbRT/xforce-webx/master/Readme%20Pictures/ToolbarMenu.png "about:debugging")
+
+The context menu:
+![alt text](https://raw.githubusercontent.com/RmbRT/xforce-webx/master/Readme%20Pictures/ContextMenu.png "about:debugging")
+
+URL Report layout:
+![alt text](https://raw.githubusercontent.com/RmbRT/xforce-webx/master/Readme%20Pictures/URLReport.png "about:debugging")
+
+
+
